@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="shifterCalendarShowcaseApp">
+<head>
+    <meta charset="UTF-8">
+    <title>UI Shifter Calendar for AngularJS</title>
+    <link rel="icon" href="favicon.ico" />
+
+    <script src="../bower_components/angular/angular.js"></script>
+    <script src="../bower_components/moment/moment.js"></script>
+
+    <script src="showcase.js"></script>
+    <script src="../dist/uiShifterCalendar.js"></script>
+</head>
+<body>
+    <div id="main" ng-controller="ShowcaseCtrl">
+        <h2>AngularJS & MomentJS test</h2>
+        <h3>{{ momentJsTest }}</h3>
+        <div ui-shifter-calendar></div>
+        <ui-shifter-calendar></ui-shifter-calendar>
+    </div>
+</body>
+</html>

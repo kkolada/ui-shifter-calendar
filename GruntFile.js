@@ -35,7 +35,7 @@ module.exports = function (grunt) {
                     }
                 },
                 src: ['./src/templates/{,*/}*.html'],
-                dest: './src/templates/templates.js',
+                dest: './src/templates/ui-shifter-calendar.templates.js',
                 module: 'UI.Shifter.Calendar'
             }
         },

@@ -8,13 +8,17 @@ module.exports = function (grunt) {
     grunt.initConfig({
         clean: ['./dist'],
         concat: {
+            options: {
+                banner: '(function() {\n\'use strict\';\n',
+                footer: '\n})();'
+            },
             dist: {
                 src: [
                     './src/ui-shifter-calendar.module.js',
                     './src/templates/*.js',
                     './src/component/*.js'
                 ],
-                dest: './dist/uiShifterCalendar.js'
+                dest: './dist/ui-shifter-calendar.js'
             }
         },
         html2js: {
@@ -39,10 +43,20 @@ module.exports = function (grunt) {
                 module: 'UI.Shifter.Calendar'
             }
         },
+        sass: {
+            options: {
+                sourceMap: true
+            },
+            dist: {
+                files: {
+                    './dist/ui-shifter-calendar.css': './src/ui-shifter-calendar.styles.scss'
+                }
+            }
+        },
         uglify: {
             build: {
                 src: ['dist/**/*.js'],
-                dest: 'ui-shifter-calendar.min.js'
+                dest: './dist/ui-shifter-calendar.min.js'
             }
         },
         connect: {
@@ -50,22 +64,27 @@ module.exports = function (grunt) {
                 options: {
                     port: 2017,
                     open: true,
-                    debug: true,
-                    keepalive: true,
-                    hostname: '*',
                     base: ['showcase', '.']
                 }
+            }
+        },
+        watch: {
+            options: {
+                livereload: true,
+                livereloadOnError: false,
+                spawn: false
+            },
+            scripts: {
+                files: ['./src/**/*.js', './src/**/*.html', './src/**/*.scss'],
+                tasks: ['default']
             }
         }
     });
 
-    // Default task.
-    grunt.registerTask('default', ['clean', 'html2js', 'concat']);
+    // Default task with original/minified js files + compiled scss -> css.
+    grunt.registerTask('default', ['clean', 'html2js', 'sass', 'concat', 'uglify']);
 
-    // uglify
-    grunt.registerTask('minify', ['uglify']);
-
-    //connect - local server
-    grunt.registerTask('serve', ['connect']);
+    // connect - local development server
+    grunt.registerTask('serve', ['connect', 'watch']);
 
 };

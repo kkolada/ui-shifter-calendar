@@ -5,7 +5,7 @@ var shifterCalendarShowcaseApp = angular.module('shifterCalendarShowcaseApp', ['
 
 shifterCalendarShowcaseApp.controller('ShowcaseCtrl', function($scope) {
 
-    $scope.momentJsTest = moment("20111031", "YYYYMMDD").fromNow();
+    $scope.momentJsDate = moment().format('MMMM Do YYYY, HH:mm:ss');
 
 });
 /* EOF */

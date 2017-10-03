@@ -1,0 +1,70 @@
+$border-color-grey: #ddd;
+
+.ui-shifter-calendar {
+  display: block;
+
+  & table {
+    border-spacing: 0px;
+    border-collapse: collapse;
+    table-layout: fixed;
+  }
+
+  & table.ui-shifter-calendar-week-wrapper {
+    & thead > tr {
+      & > th {
+        padding: 4px 30px;
+        border: 1px solid $border-color-grey;
+        font-weight: normal;
+        min-width: 60px;
+
+        &:first-child {
+          padding: 4px 0;
+        }
+      }
+
+      &.subhead > th {
+        //font-weight: lighter;
+        font-size: 0.8em;
+      }
+    }
+
+    & tbody > tr {
+      & .shift {
+        &:hover {
+          background: #c80000;
+        }
+        cursor: pointer;
+        position: absolute;
+        width: 60px;
+        height: 50px;
+        display: block;
+        background: #ff0000;
+        border-radius: 5px;
+        box-shadow: 2px 3px 5px -2px #ddd;
+        transition: background .3s ease .0s;
+        & span {
+          font-size: x-small;
+          padding-left: 5px;
+          color: #fff;
+        }
+      }
+
+      & > td {
+        border: 1px solid $border-color-grey;
+        font-weight: normal;
+        min-width: 60px;
+        vertical-align: top;
+
+        &:first-child {
+          padding: 4px 6px;
+          font-weight: lighter;
+          text-align: right;
+        }
+      }
+
+      &.half-hour > td {
+        border-bottom: 1px dotted black;
+      }
+    }
+  }
+}

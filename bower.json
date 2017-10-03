@@ -1,0 +1,21 @@
+{
+  "name": "ui-shifter-calendar",
+  "version": "0.0.0",
+  "description": "SportShifter calendar functionality.",
+  "author": "Krzysztof Kolada",
+  "license": "MIT",
+  "main": "./dist/uiShifterCalendar.js",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test*",
+    "demo*",
+    "GruntFile.js",
+    "package.json"
+  ],
+  "dependencies": {
+    "angular": ">=1.4.x",
+    "moment": ">=2.5.0"
+  }
+}

@@ -15,6 +15,10 @@
             templateUrl: 'src/templates/ui-shifter-calendar.tpl.html',
             controller: 'uiShifterCalendarCtrl',
             controllerAs: 'vm',
+            scope: {
+                timeFilter: '=',
+                shadow: '='
+            },
             bindToController: true,
             link: link
         };

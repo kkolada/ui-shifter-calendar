@@ -1,18 +1,18 @@
 <div class="ui-shifter-calendar">
-    <table class="ui-shifter-calendar-week-wrapper">
+    <table ng-class="['ui-shifter-calendar-week-wrapper', {shadow: vm.shadow}]">
         <thead>
             <tr>
                 <th></th>
-                <th>Mon 10/2</th>
-                <th>Tue 10/3</th>
-                <th>Wed 10/4</th>
-                <th>Thu 10/5</th>
-                <th>Fri 10/6</th>
-                <th>Sat 10/7</th>
-                <th>Sun 10/1</th>
+                <th>Monday</th>
+                <th>Tuesday</th>
+                <th>Wednesday</th>
+                <th>Thursday</th>
+                <th>Friday</th>
+                <th>Saturday</th>
+                <th>Sunday</th>
             </tr>
             <tr class="subhead">
-                <th>all-day</th>
+                <th></th>
                 <th>Team</th>
                 <th>Team</th>
                 <th>Team</th>
@@ -23,10 +23,10 @@
             </tr>
         </thead>
         <tbody>
-            <tr class="half-hour">
-                <td>12am</td>
+            <tr class="first-half-hour" ng-repeat-start="hour in vm.hours track by $index">
+                <td>{{hour.time}}</td>
                 <td>
-                    <div class="shift">
+                    <div ng-if="$index === 0" class="shift">
                         <span>Shift</span>
                     </div>
                 </td>
@@ -37,167 +37,7 @@
                 <td></td>
                 <td></td>
             </tr>
-            <tr>
-                <td>&nbsp;</td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr class="half-hour">
-                <td>1pm</td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>&nbsp;</td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr class="half-hour">
-                <td>2pm</td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>&nbsp;</td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr class="half-hour">
-                <td>3pm</td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>&nbsp;</td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr class="half-hour">
-                <td>4pm</td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>&nbsp;</td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr class="half-hour">
-                <td>5pm</td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>&nbsp;</td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr class="half-hour">
-                <td>6pm</td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>&nbsp;</td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr class="half-hour">
-                <td>7pm</td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>&nbsp;</td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr class="half-hour">
-                <td>8pm</td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
+            <tr class="second-half-hour" ng-repeat-end>
                 <td>&nbsp;</td>
                 <td></td>
                 <td></td>

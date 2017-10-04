@@ -1,12 +1,19 @@
-$border-color-grey: #ddd;
+$border-color-grey: #cfcfcf;
+$column-min-width: 80px;
+$first-column-min-width: 30px;
 
 .ui-shifter-calendar {
   display: block;
 
   & table {
+    width: 100%;
     border-spacing: 0px;
     border-collapse: collapse;
-    table-layout: fixed;
+    table-layout: auto;
+    &.shadow {
+      -webkit-box-shadow: 4px 4px 12px -4px $border-color-grey;
+      box-shadow: 4px 4px 12px -4px $border-color-grey;
+    }
   }
 
   & table.ui-shifter-calendar-week-wrapper {
@@ -15,16 +22,22 @@ $border-color-grey: #ddd;
         padding: 4px 30px;
         border: 1px solid $border-color-grey;
         font-weight: normal;
-        min-width: 60px;
+        min-width: $column-min-width;
 
         &:first-child {
           padding: 4px 0;
+          border-top: none;
+          border-left: none;
+          border-bottom: none;
+          min-width: $first-column-min-width;
         }
       }
 
       &.subhead > th {
         //font-weight: lighter;
         font-size: 0.8em;
+        border-top: none;
+        border-left: none;
       }
     }
 
@@ -35,12 +48,12 @@ $border-color-grey: #ddd;
         }
         cursor: pointer;
         position: absolute;
-        width: 60px;
-        height: 50px;
+        width: 70px;
+        height: 60px;
         display: block;
         background: #ff0000;
-        border-radius: 5px;
-        box-shadow: 2px 3px 5px -2px #ddd;
+        border-radius: 4px;
+        border: 1px solid #c80000;
         transition: background .3s ease .0s;
         & span {
           font-size: x-small;
@@ -52,18 +65,25 @@ $border-color-grey: #ddd;
       & > td {
         border: 1px solid $border-color-grey;
         font-weight: normal;
-        min-width: 60px;
+        font-size: small;
+        min-width: $column-min-width;
         vertical-align: top;
+        height: 15px;
 
         &:first-child {
           padding: 4px 6px;
           font-weight: lighter;
           text-align: right;
+          min-width: $first-column-min-width;
         }
       }
 
-      &.half-hour > td {
-        border-bottom: 1px dotted black;
+      &.first-half-hour > td {
+        border-bottom-style: dotted;
+      }
+
+      &.second-half-hour > td {
+        border-top-style: dotted;
       }
     }
   }

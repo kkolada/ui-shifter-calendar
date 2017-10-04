@@ -11,6 +11,15 @@ shifterCalendarShowcaseApp.controller('ShowcaseCtrl', function($scope) {
         startTime: {t:0},
         endTime: {t:1}
     };
+    $scope.checkboxModel = {
+        mon: true,
+        tue: true,
+        wed: true,
+        thu: true,
+        fri: true,
+        sat: true,
+        sun: true
+    }
 
 });
 /* EOF */

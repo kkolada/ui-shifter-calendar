@@ -38,15 +38,39 @@
         <h3>{{ momentJsDate }}</h3>
         <h5 style="margin-bottom: 0">Filters:</h5>
         <hr style="margin: 5px 0 25px 0;">
+        <!-- time filter -->
         <label for="startTime">Start time:</label>
         <select name="mySelect" id="startTime" ng-options="option.t for option in data.availableHours track by option.t"
                 ng-model="data.startTime"></select>
         <label for="endTime">End time:</label>
         <select name="mySelect" id="endTime" ng-options="option.t for option in data.availableHours track by option.t"
                 ng-model="data.endTime"></select>
+        <br/><hr style="border: none;">
+        <!-- day filter -->
+        <label>
+            <input type="checkbox" ng-model="checkboxModel.mon"> Monday
+        </label>
+        <label>
+            <input type="checkbox" ng-model="checkboxModel.tue"> Tuesday
+        </label>
+        <label>
+            <input type="checkbox" ng-model="checkboxModel.wed"> Wednesday
+        </label>
+        <label>
+            <input type="checkbox" ng-model="checkboxModel.thu"> Thursday
+        </label>
+        <label>
+            <input type="checkbox" ng-model="checkboxModel.fri"> Friday
+        </label>
+        <label>
+            <input type="checkbox" ng-model="checkboxModel.sat"> Saturday
+        </label>
+        <label>
+            <input type="checkbox" ng-model="checkboxModel.sun"> Sunday
+        </label><br/>
         <hr style="margin: 25px 0 40px 0;">
         <div style="width: 90%; margin: auto;">
-            <ui-shifter-calendar shadow="true" time-filter="{start: data.startTime.t, end: data.endTime.t}"></ui-shifter-calendar>
+            <ui-shifter-calendar shadow="true" time-filter="{start: data.startTime.t, end: data.endTime.t}" day-filter="checkboxModel"></ui-shifter-calendar>
         </div>
 
         <!-- also possible to use as attribute <div ui-shifter-calendar ... ></div>-->

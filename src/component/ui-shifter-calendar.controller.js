@@ -23,6 +23,9 @@
             countRows(newValue.start, newValue.end);
         }, true);
 
+        $scope.$watch('vm.dayFilter', function (newValue, oldValue) {
+        }, true);
+
     }
 
 })();

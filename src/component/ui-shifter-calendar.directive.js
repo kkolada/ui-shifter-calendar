@@ -17,6 +17,7 @@
             controllerAs: 'vm',
             scope: {
                 timeFilter: '=',
+                dayFilter: '=',
                 shadow: '='
             },
             bindToController: true,

@@ -72,7 +72,9 @@
         <button ng-click="activateWeekend()">Weekend</button><br/>
         <hr style="margin: 25px 0 40px 0;">
         <div style="width: 90%; margin: auto;">
-            <ui-shifter-calendar shadow="true" time-filter="{start: data.startTime.t, end: data.endTime.t}" day-filter="checkboxModel"></ui-shifter-calendar>
+            <ui-shifter-calendar id="randomUUID" shadow="true"
+                                 time-filter="{start: data.startTime.t, end: data.endTime.t}"
+                                 day-filter="checkboxModel" events="events"></ui-shifter-calendar>
         </div>
 
         <!-- also possible to use as attribute <div ui-shifter-calendar ... ></div>-->

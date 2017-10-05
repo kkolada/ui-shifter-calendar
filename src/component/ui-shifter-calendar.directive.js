@@ -16,6 +16,8 @@
             controller: 'uiShifterCalendarCtrl',
             controllerAs: 'vm',
             scope: {
+                id: '@',
+                events: '=',
                 timeFilter: '=',
                 dayFilter: '=',
                 shadow: '='

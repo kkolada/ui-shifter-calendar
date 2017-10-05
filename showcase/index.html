@@ -65,9 +65,11 @@
         <label>
             <input type="checkbox" ng-model="checkboxModel.sat"> Saturday
         </label>
-        <label>
+        <label style="margin-right: 20px;">
             <input type="checkbox" ng-model="checkboxModel.sun"> Sunday
-        </label><br/>
+        </label>
+        <button ng-click="activateWorkingDays()">Working days</button>
+        <button ng-click="activateWeekend()">Weekend</button><br/>
         <hr style="margin: 25px 0 40px 0;">
         <div style="width: 90%; margin: auto;">
             <ui-shifter-calendar shadow="true" time-filter="{start: data.startTime.t, end: data.endTime.t}" day-filter="checkboxModel"></ui-shifter-calendar>

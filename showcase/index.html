@@ -37,13 +37,13 @@
         <h2>UI Shifter Calendar DEMO</h2>
         <h3>{{ momentJsDate }}</h3>
         <h5 style="margin-bottom: 0">Filters:</h5>
-        <hr style="margin: 5px 0 25px 0;">
+        <hr style="margin: 5px 0 20px 0;">
         <!-- time filter -->
         <label for="startTime">Start time:</label>
-        <select name="mySelect" id="startTime" ng-options="option.t for option in data.availableHours track by option.t"
+        <select id="startTime" ng-options="option.t for option in data.availableHours track by option.t"
                 ng-model="data.startTime"></select>
         <label for="endTime">End time:</label>
-        <select name="mySelect" id="endTime" ng-options="option.t for option in data.availableHours track by option.t"
+        <select id="endTime" ng-options="option.t for option in data.availableHours track by option.t"
                 ng-model="data.endTime"></select>
         <br/><hr style="border: none;">
         <!-- day filter -->
@@ -70,13 +70,23 @@
         </label>
         <button ng-click="activateWorkingDays()">Working days</button>
         <button ng-click="activateWeekend()">Weekend</button><br/>
-        <hr style="margin: 25px 0 40px 0;">
+        <hr style="margin: 20px 0 15px 0;">
+        <label for="eventDay">Event day:</label>
+        <select name="mySelect" id="eventDay" ng-options="option.d for option in data.availableDays track by option.d"
+                ng-model="data.daySelected"></select>
+        <label for="eventStartTime">Event start time:</label>
+        <input type="text" id="eventStartTime" ng-model="eventStartTime" placeholder="00:00" />
+        <label for="eventEndTime">Event end time:</label>
+        <input type="text" id="eventEndTime" ng-model="eventEndTime" placeholder="00:00" />
+        <label for="eventFraction">Event fraction:</label>
+        <input type="text" id="eventFraction" ng-model="eventFraction" placeholder="1/1" />
+        <button ng-click="addNewEvent()">Add event</button>
+        <hr style="border: none; margin-bottom: 30px;">
         <div style="width: 90%; margin: auto;">
             <ui-shifter-calendar id="randomUUID" shadow="true"
                                  time-filter="{start: data.startTime.t, end: data.endTime.t}"
                                  day-filter="checkboxModel" events="events"></ui-shifter-calendar>
         </div>
-
         <!-- also possible to use as attribute <div ui-shifter-calendar ... ></div>-->
     </div>
 </body>

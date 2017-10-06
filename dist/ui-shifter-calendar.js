@@ -151,7 +151,7 @@ angular.module('src/templates/ui-shifter-calendar.tpl.html', []).run(['$template
             //console.log('create event', element.from, element.to, element.day);
             var newEvent = angular.element(
                 '<div class="shift"><span>' + element.fraction + '<br>' +
-                element.from + '<br>' + element.to + '</span></div>'
+                element.from + ' - ' + element.to + '</span></div>'
             );
 
             // set event's width and height
@@ -202,7 +202,7 @@ angular.module('src/templates/ui-shifter-calendar.tpl.html', []).run(['$template
                 var remainder = diff%30,
                     halfHours = (diff-remainder)/30,
                     relative = remainder/30;
-                offset = (colHeight*halfHours + Math.round(colHeight*relative))-2;
+                offset = (colHeight*halfHours + Math.round(colHeight*relative+0.5))-1;
             }
 
             return offset;
@@ -213,7 +213,7 @@ angular.module('src/templates/ui-shifter-calendar.tpl.html', []).run(['$template
                 halfHours = (time-remainder)/30,
                 relative = remainder/30;
 
-            return (colHeight*halfHours + Math.round(colHeight*relative))-4;
+            return (colHeight*halfHours + Math.round(colHeight*relative+0.5))-5;
         }
 
         function calculateWidth(colWidth, fraction) {

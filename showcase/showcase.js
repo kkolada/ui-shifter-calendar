@@ -12,7 +12,11 @@ shifterCalendarShowcaseApp.controller('ShowcaseCtrl', function($scope) {
             {t:13}, {t:14}, {t:15}, {t:16}, {t:17}, {t:18}, {t:19}, {t:20}, {t:21}, {t:22}, {t:23}, {t:24}
             ],
         startTime: {t:0},
-        endTime: {t:15}
+        endTime: {t:15},
+        availableDays: [
+            {d:'Monday'}, {d:'Tuesday'}, {d:'Wednesday'}, {d:'Thursday'}, {d:'Friday'}, {d:'Saturday'}, {d:'Sunday'}
+        ],
+        daySelected: {d:'Monday'}
     };
     $scope.checkboxModel = {
         mon: true,
@@ -80,11 +84,19 @@ shifterCalendarShowcaseApp.controller('ShowcaseCtrl', function($scope) {
         },
         {
             day: 'Sunday',
-            from: '04:50',
+            from: '04:55',
             to: '11:45',
             fraction: '2/8'
         }
     ];
+    $scope.addNewEvent = function() {
+        $scope.events.push({
+            day: $scope.data.daySelected.d,
+            from: $scope.eventStartTime,
+            to: $scope.eventEndTime,
+            fraction: $scope.eventFraction
+        });
+    };
 
 });
 /* EOF */

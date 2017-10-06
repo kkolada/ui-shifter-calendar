@@ -32,6 +32,7 @@
     background: #ff0000;
     border-radius: 4px;
     border: 1px solid #c80000;
+    opacity: .8;
     transition: background .3s ease .0s; }
     .ui-shifter-calendar table.ui-shifter-calendar-week-wrapper tbody > tr .shift:hover {
       background: #c80000; }

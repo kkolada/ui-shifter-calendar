@@ -46,6 +46,10 @@
     .ui-shifter-calendar table.ui-shifter-calendar-week-wrapper tbody > tr .booking.cutBottom {
       border-radius: 4px 4px 0 0;
       border-bottom: none; }
+    .ui-shifter-calendar table.ui-shifter-calendar-week-wrapper tbody > tr .booking.cutTopAndBottom {
+      border-radius: 0 0 0 0;
+      border-top: none;
+      border-bottom: none; }
   .ui-shifter-calendar table.ui-shifter-calendar-week-wrapper tbody > tr > td {
     border: 1px solid #cfcfcf;
     font-weight: normal;

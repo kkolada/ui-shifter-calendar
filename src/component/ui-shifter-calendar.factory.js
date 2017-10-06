@@ -53,12 +53,14 @@
                 angular.element(target).append(newBooking);
             } else {
                 var recalculatedValues = cutEventTopPart(componentId, timeFilterStart, element);
-                newBooking[0].style.height = recalculatedValues.height + 'px';
-                newBooking[0].style.width = recalculatedValues.width + 'px';
-                newBooking[0].style.top = top + 'px';
-                var newTarget = $document[0].getElementById(componentId + '-' + timeFilterStart + '-' + element.day);
-                angular.element(newTarget).append(newBooking);
-                newBooking.addClass('cutTop');
+                if (recalculatedValues.width !== 0 && recalculatedValues.height !== 0) {
+                    newBooking[0].style.height = recalculatedValues.height + 'px';
+                    newBooking[0].style.width = recalculatedValues.width + 'px';
+                    newBooking[0].style.top = top + 'px';
+                    var newTarget = $document[0].getElementById(componentId + '-' + timeFilterStart + '-' + element.day);
+                    angular.element(newTarget).append(newBooking);
+                    newBooking.addClass('cutTop');
+                }
             }
 
             // cut bottom border and shrink event in order to match time filter
@@ -67,7 +69,12 @@
                 var indexOfPx = newBooking[0].style.height.indexOf('px');
                 var currentHeight = parseInt(newBooking[0].style.height.substring(0, indexOfPx));
                 newBooking[0].style.height = (currentHeight - heightDifference) + 'px';
-                newBooking.addClass('cutBottom');
+                if (newBooking.hasClass('cutTop')) {
+                    newBooking.removeClass('cutTop');
+                    newBooking.addClass('cutTopAndBottom');
+                } else {
+                    newBooking.addClass('cutBottom');
+                }
             }
         };
 
@@ -227,7 +234,7 @@
 
         /**
          * This method recalculates coordinates of table row (take first one row - chosen from time filter by user) if
-         * necessary (check time difference between event start time and filter time start).
+         * necessary (check time difference between event start time/event end time and filter time start).
          *
          * @param componentId
          * @param timeFilterStart
@@ -238,7 +245,8 @@
             var recalculatedHeight = 0,
                 recalculatedWidth = 0,
                 newCoordinates = null;
-            if (calculateMinuteDiff(timeFilterStart, event.from) < 0) {
+            if (calculateMinuteDiff(timeFilterStart, event.from) < 0 &&
+                calculateMinuteDiff(timeFilterStart, event.to) > 0) {
                 newCoordinates = getColumnCoordinates(componentId, event.day, timeFilterStart);
                 recalculatedHeight = calculateHeight(
                     calculateMinuteDiff(timeFilterStart, event.to),

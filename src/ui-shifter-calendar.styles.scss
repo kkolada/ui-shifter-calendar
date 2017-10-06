@@ -1,6 +1,7 @@
 $border-color-grey: #cfcfcf;
 $column-min-width: 80px;
 $first-column-min-width: 30px;
+$event-border-radius: 4px;
 
 .ui-shifter-calendar {
   display: block;
@@ -52,7 +53,7 @@ $first-column-min-width: 30px;
         height: 60px;
         display: block;
         background: #ff0000;
-        border-radius: 4px;
+        border-radius: $event-border-radius;
         border: 1px solid #c80000;
         opacity: .8;
         transition: background .3s ease .0s;
@@ -60,6 +61,14 @@ $first-column-min-width: 30px;
           font-size: x-small;
           padding-left: 5px;
           color: #fff;
+        }
+        &.cutTop {
+          border-radius: 0 0 $event-border-radius $event-border-radius;
+          border-top: none;
+        }
+        &.cutBottom {
+          border-radius: $event-border-radius $event-border-radius 0 0;
+          border-bottom: none;
         }
       }
 

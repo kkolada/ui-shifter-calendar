@@ -13,13 +13,13 @@
          * Main method of uiShiftCalendarEvent factory - it creates booking event and assign it to the DOM in proper
          * table cell.
          *
-         * @param tableId
-         * @param targetId
+         * @param componentId
          * @param element
+         * @param timeFilterStart
          */
-        uiShiftCalendarEvent.createBooking = function (tableId, targetId, element) {
-            //console.log('create event', element.from, element.to, element.day);
-            var coordinates = getColumnCoordinates(tableId, element.day, element.from),
+        uiShiftCalendarEvent.createBooking = function (componentId, element, timeFilterStart) {
+            var targetId = componentId + '-' + element.from.substring(0, 2) +':00-' + element.day,
+                coordinates = getColumnCoordinates(componentId, element.day, element.from),
                 newBooking = angular.element(
                 '<div class="' + eventConst.BOOKING + '"><span>' + element.fraction + '<br>' +
                 element.from + ' - ' + element.to + '</span></div>'
@@ -38,17 +38,37 @@
             }
 
             // set event's top/left value
-            var left = coordinates.left,
+            var left = coordinates.left-1,
                 top = coordinates.top;
 
             // top offset
             top += calculateTopOffset(element.from, coordinates.height);
 
-            newBooking[0].style.top = left + 'px';
+            newBooking[0].style.left = left + 'px';
             newBooking[0].style.top = top + 'px';
 
+            // append element to the DOM, check whether event is full (top part cutting)
             var target = $document[0].getElementById(targetId);
-            angular.element(target).append(newBooking);
+            if (target !== null) {
+                angular.element(target).append(newBooking);
+            } else {
+                var recalculatedValues = cutEventTopPart(componentId, timeFilterStart, element);
+                newBooking[0].style.height = recalculatedValues.height + 'px';
+                newBooking[0].style.width = recalculatedValues.width + 'px';
+                newBooking[0].style.top = top + 'px';
+                var newTarget = $document[0].getElementById(componentId + '-' + timeFilterStart + '-' + element.day);
+                angular.element(newTarget).append(newBooking);
+                newBooking.addClass('cutTop');
+            }
+
+            // cut bottom border and shrink event in order to match time filter
+            var heightDifference = cutEventBottomPart(componentId, newBooking[0].getBoundingClientRect());
+            if (heightDifference > 0) {
+                var indexOfPx = newBooking[0].style.height.indexOf('px');
+                var currentHeight = parseInt(newBooking[0].style.height.substring(0, indexOfPx));
+                newBooking[0].style.height = (currentHeight - heightDifference) + 'px';
+                newBooking.addClass('cutBottom');
+            }
         };
 
         // HELPERS ----------
@@ -166,6 +186,72 @@
                 width: widthCol,
                 height:  heightCol
             }
+        }
+
+        /**
+         * Method takes one argument - id of table and returns bottom border position.
+         * @param id
+         * @returns {number}
+         */
+        function getTableBottomBorderPosition(id) {
+            var table = $document[0].getElementById(id + '-Table');
+            if (table !== null) {
+                var boundingRect = table.getBoundingClientRect();
+                var top = boundingRect.top;
+                var height = boundingRect.height;
+            }
+
+            return Math.round($window.scrollY + top + height);
+        }
+
+        /**
+         * This method checks bottom borders of table and given event. If necessary it calculates and returns height
+         * difference which should be subtracted and handled in createEvent method in order to have time filter applied
+         * and one clean event/table line.
+         *
+         * @param id
+         * @param boundingClientRect
+         * @returns {number}
+         */
+        function cutEventBottomPart(id, boundingClientRect) {
+            var bottomTableBorder = getTableBottomBorderPosition(id),
+                bottomEventBorder = boundingClientRect.top + $window.scrollY + boundingClientRect.height,
+                diff = 0;
+
+            if (bottomTableBorder < bottomEventBorder) {
+                diff = bottomEventBorder - bottomTableBorder;
+            }
+
+            return diff;
+        }
+
+        /**
+         * This method recalculates coordinates of table row (take first one row - chosen from time filter by user) if
+         * necessary (check time difference between event start time and filter time start).
+         *
+         * @param componentId
+         * @param timeFilterStart
+         * @param event
+         * @returns {{coordinates: *, height: number, width: number}}
+         */
+        function cutEventTopPart(componentId, timeFilterStart, event) {
+            var recalculatedHeight = 0,
+                recalculatedWidth = 0,
+                newCoordinates = null;
+            if (calculateMinuteDiff(timeFilterStart, event.from) < 0) {
+                newCoordinates = getColumnCoordinates(componentId, event.day, timeFilterStart);
+                recalculatedHeight = calculateHeight(
+                    calculateMinuteDiff(timeFilterStart, event.to),
+                    newCoordinates.height
+                );
+                recalculatedWidth = calculateWidth(newCoordinates.width, event.fraction)
+            }
+
+            return {
+                coordinates: newCoordinates,
+                height: recalculatedHeight,
+                width: recalculatedWidth
+            };
         }
 
         // public factory methods

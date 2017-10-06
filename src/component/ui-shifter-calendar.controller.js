@@ -21,14 +21,9 @@
         };
 
         var drawEvents = function () {
-            //console.log('drawing events', vm.events);
             clearAllEvents();
             vm.events.forEach(function(element) {
-                uiShifterCalendarEvent.createBooking(
-                    vm.id,
-                    vm.id + '-' + element.from.substring(0, 2) +':00-' + element.day,
-                    element
-                );
+                uiShifterCalendarEvent.createBooking(vm.id, element, vm.hours[0].time);
             });
         };
 

@@ -12,7 +12,7 @@ angular.module('UI.Shifter.Calendar', ['src/templates/ui-shifter-calendar.tpl.ht
 angular.module('src/templates/ui-shifter-calendar.tpl.html', []).run(['$templateCache', function($templateCache) {
   'use strict';
   $templateCache.put('src/templates/ui-shifter-calendar.tpl.html',
-    '<div class=ui-shifter-calendar><table ng-class="[\'ui-shifter-calendar-week-wrapper\', {shadow: vm.shadow}]"><thead><tr><th></th><th ng-if=vm.dayFilter.mon>Monday</th><th ng-if=vm.dayFilter.tue>Tuesday</th><th ng-if=vm.dayFilter.wed>Wednesday</th><th ng-if=vm.dayFilter.thu>Thursday</th><th ng-if=vm.dayFilter.fri>Friday</th><th ng-if=vm.dayFilter.sat>Saturday</th><th ng-if=vm.dayFilter.sun>Sunday</th></tr><tr class=subhead><th></th><th ng-if=vm.dayFilter.mon>Team</th><th ng-if=vm.dayFilter.tue>Team</th><th ng-if=vm.dayFilter.wed>Team</th><th ng-if=vm.dayFilter.thu>Team</th><th ng-if=vm.dayFilter.fri>Team</th><th ng-if=vm.dayFilter.sat>Team</th><th ng-if=vm.dayFilter.sun>Team</th></tr></thead><tbody><tr class=first-half-hour ng-repeat-start="hour in vm.hours track by $index"><td id="{{vm.id + \'-\' + hour.time}}">{{hour.time}}</td><td id="{{vm.id + \'-\' + hour.time + \'-Monday\'}}" ng-if=vm.dayFilter.mon></td><td id="{{vm.id + \'-\' + hour.time + \'-Tuesday\'}}" ng-if=vm.dayFilter.tue></td><td id="{{vm.id + \'-\' + hour.time + \'-Wednesday\'}}" ng-if=vm.dayFilter.wed></td><td id="{{vm.id + \'-\' + hour.time + \'-Thursday\'}}" ng-if=vm.dayFilter.thu></td><td id="{{vm.id + \'-\' + hour.time + \'-Friday\'}}" ng-if=vm.dayFilter.fri></td><td id="{{vm.id + \'-\' + hour.time + \'-Saturday\'}}" ng-if=vm.dayFilter.sat></td><td id="{{vm.id + \'-\' + hour.time + \'-Sunday\'}}" ng-if=vm.dayFilter.sun></td></tr><tr class=second-half-hour ng-repeat-end><td>&nbsp;</td><td ng-if=vm.dayFilter.mon></td><td ng-if=vm.dayFilter.tue></td><td ng-if=vm.dayFilter.wed></td><td ng-if=vm.dayFilter.thu></td><td ng-if=vm.dayFilter.fri></td><td ng-if=vm.dayFilter.sat></td><td ng-if=vm.dayFilter.sun></td></tr></tbody></table></div>');
+    '<div class=ui-shifter-calendar><table id="{{vm.id + \'-Table\'}}" ng-class="[\'ui-shifter-calendar-week-wrapper\', {shadow: vm.shadow}]"><thead><tr><th></th><th ng-if=vm.dayFilter.mon>Monday</th><th ng-if=vm.dayFilter.tue>Tuesday</th><th ng-if=vm.dayFilter.wed>Wednesday</th><th ng-if=vm.dayFilter.thu>Thursday</th><th ng-if=vm.dayFilter.fri>Friday</th><th ng-if=vm.dayFilter.sat>Saturday</th><th ng-if=vm.dayFilter.sun>Sunday</th></tr><tr class=subhead><th></th><th ng-if=vm.dayFilter.mon>Team</th><th ng-if=vm.dayFilter.tue>Team</th><th ng-if=vm.dayFilter.wed>Team</th><th ng-if=vm.dayFilter.thu>Team</th><th ng-if=vm.dayFilter.fri>Team</th><th ng-if=vm.dayFilter.sat>Team</th><th ng-if=vm.dayFilter.sun>Team</th></tr></thead><tbody><tr class=first-half-hour ng-repeat-start="hour in vm.hours track by $index"><td id="{{vm.id + \'-\' + hour.time}}">{{hour.time}}</td><td id="{{vm.id + \'-\' + hour.time + \'-Monday\'}}" ng-if=vm.dayFilter.mon></td><td id="{{vm.id + \'-\' + hour.time + \'-Tuesday\'}}" ng-if=vm.dayFilter.tue></td><td id="{{vm.id + \'-\' + hour.time + \'-Wednesday\'}}" ng-if=vm.dayFilter.wed></td><td id="{{vm.id + \'-\' + hour.time + \'-Thursday\'}}" ng-if=vm.dayFilter.thu></td><td id="{{vm.id + \'-\' + hour.time + \'-Friday\'}}" ng-if=vm.dayFilter.fri></td><td id="{{vm.id + \'-\' + hour.time + \'-Saturday\'}}" ng-if=vm.dayFilter.sat></td><td id="{{vm.id + \'-\' + hour.time + \'-Sunday\'}}" ng-if=vm.dayFilter.sun></td></tr><tr class=second-half-hour ng-repeat-end><td>&nbsp;</td><td ng-if=vm.dayFilter.mon></td><td ng-if=vm.dayFilter.tue></td><td ng-if=vm.dayFilter.wed></td><td ng-if=vm.dayFilter.thu></td><td ng-if=vm.dayFilter.fri></td><td ng-if=vm.dayFilter.sat></td><td ng-if=vm.dayFilter.sun></td></tr></tbody></table></div>');
 }]);
 
 /* global toastr:false, moment:false */
@@ -49,14 +49,9 @@ angular.module('src/templates/ui-shifter-calendar.tpl.html', []).run(['$template
         };
 
         var drawEvents = function () {
-            //console.log('drawing events', vm.events);
             clearAllEvents();
             vm.events.forEach(function(element) {
-                uiShifterCalendarEvent.createBooking(
-                    vm.id,
-                    vm.id + '-' + element.from.substring(0, 2) +':00-' + element.day,
-                    element
-                );
+                uiShifterCalendarEvent.createBooking(vm.id, element, vm.hours[0].time);
             });
         };
 
@@ -144,13 +139,13 @@ angular.module('src/templates/ui-shifter-calendar.tpl.html', []).run(['$template
          * Main method of uiShiftCalendarEvent factory - it creates booking event and assign it to the DOM in proper
          * table cell.
          *
-         * @param tableId
-         * @param targetId
+         * @param componentId
          * @param element
+         * @param timeFilterStart
          */
-        uiShiftCalendarEvent.createBooking = function (tableId, targetId, element) {
-            //console.log('create event', element.from, element.to, element.day);
-            var coordinates = getColumnCoordinates(tableId, element.day, element.from),
+        uiShiftCalendarEvent.createBooking = function (componentId, element, timeFilterStart) {
+            var targetId = componentId + '-' + element.from.substring(0, 2) +':00-' + element.day,
+                coordinates = getColumnCoordinates(componentId, element.day, element.from),
                 newBooking = angular.element(
                 '<div class="' + eventConst.BOOKING + '"><span>' + element.fraction + '<br>' +
                 element.from + ' - ' + element.to + '</span></div>'
@@ -169,17 +164,37 @@ angular.module('src/templates/ui-shifter-calendar.tpl.html', []).run(['$template
             }
 
             // set event's top/left value
-            var left = coordinates.left,
+            var left = coordinates.left-1,
                 top = coordinates.top;
 
             // top offset
             top += calculateTopOffset(element.from, coordinates.height);
 
-            newBooking[0].style.top = left + 'px';
+            newBooking[0].style.left = left + 'px';
             newBooking[0].style.top = top + 'px';
 
+            // append element to the DOM, check whether event is full (top part cutting)
             var target = $document[0].getElementById(targetId);
-            angular.element(target).append(newBooking);
+            if (target !== null) {
+                angular.element(target).append(newBooking);
+            } else {
+                var recalculatedValues = cutEventTopPart(componentId, timeFilterStart, element);
+                newBooking[0].style.height = recalculatedValues.height + 'px';
+                newBooking[0].style.width = recalculatedValues.width + 'px';
+                newBooking[0].style.top = top + 'px';
+                var newTarget = $document[0].getElementById(componentId + '-' + timeFilterStart + '-' + element.day);
+                angular.element(newTarget).append(newBooking);
+                newBooking.addClass('cutTop');
+            }
+
+            // cut bottom border and shrink event in order to match time filter
+            var heightDifference = cutEventBottomPart(componentId, newBooking[0].getBoundingClientRect());
+            if (heightDifference > 0) {
+                var indexOfPx = newBooking[0].style.height.indexOf('px');
+                var currentHeight = parseInt(newBooking[0].style.height.substring(0, indexOfPx));
+                newBooking[0].style.height = (currentHeight - heightDifference) + 'px';
+                newBooking.addClass('cutBottom');
+            }
         };
 
         // HELPERS ----------
@@ -297,6 +312,72 @@ angular.module('src/templates/ui-shifter-calendar.tpl.html', []).run(['$template
                 width: widthCol,
                 height:  heightCol
             }
+        }
+
+        /**
+         * Method takes one argument - id of table and returns bottom border position.
+         * @param id
+         * @returns {number}
+         */
+        function getTableBottomBorderPosition(id) {
+            var table = $document[0].getElementById(id + '-Table');
+            if (table !== null) {
+                var boundingRect = table.getBoundingClientRect();
+                var top = boundingRect.top;
+                var height = boundingRect.height;
+            }
+
+            return Math.round($window.scrollY + top + height);
+        }
+
+        /**
+         * This method checks bottom borders of table and given event. If necessary it calculates and returns height
+         * difference which should be subtracted and handled in createEvent method in order to have time filter applied
+         * and one clean event/table line.
+         *
+         * @param id
+         * @param boundingClientRect
+         * @returns {number}
+         */
+        function cutEventBottomPart(id, boundingClientRect) {
+            var bottomTableBorder = getTableBottomBorderPosition(id),
+                bottomEventBorder = boundingClientRect.top + $window.scrollY + boundingClientRect.height,
+                diff = 0;
+
+            if (bottomTableBorder < bottomEventBorder) {
+                diff = bottomEventBorder - bottomTableBorder;
+            }
+
+            return diff;
+        }
+
+        /**
+         * This method recalculates coordinates of table row (take first one row - chosen from time filter by user) if
+         * necessary (check time difference between event start time and filter time start).
+         *
+         * @param componentId
+         * @param timeFilterStart
+         * @param event
+         * @returns {{coordinates: *, height: number, width: number}}
+         */
+        function cutEventTopPart(componentId, timeFilterStart, event) {
+            var recalculatedHeight = 0,
+                recalculatedWidth = 0,
+                newCoordinates = null;
+            if (calculateMinuteDiff(timeFilterStart, event.from) < 0) {
+                newCoordinates = getColumnCoordinates(componentId, event.day, timeFilterStart);
+                recalculatedHeight = calculateHeight(
+                    calculateMinuteDiff(timeFilterStart, event.to),
+                    newCoordinates.height
+                );
+                recalculatedWidth = calculateWidth(newCoordinates.width, event.fraction)
+            }
+
+            return {
+                coordinates: newCoordinates,
+                height: recalculatedHeight,
+                width: recalculatedWidth
+            };
         }
 
         // public factory methods

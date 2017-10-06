@@ -23,7 +23,7 @@
     font-size: 0.8em;
     border-top: none;
     border-left: none; }
-  .ui-shifter-calendar table.ui-shifter-calendar-week-wrapper tbody > tr .shift {
+  .ui-shifter-calendar table.ui-shifter-calendar-week-wrapper tbody > tr .booking {
     cursor: pointer;
     position: absolute;
     width: 70px;
@@ -34,9 +34,9 @@
     border: 1px solid #c80000;
     opacity: .8;
     transition: background .3s ease .0s; }
-    .ui-shifter-calendar table.ui-shifter-calendar-week-wrapper tbody > tr .shift:hover {
+    .ui-shifter-calendar table.ui-shifter-calendar-week-wrapper tbody > tr .booking:hover {
       background: #c80000; }
-    .ui-shifter-calendar table.ui-shifter-calendar-week-wrapper tbody > tr .shift span {
+    .ui-shifter-calendar table.ui-shifter-calendar-week-wrapper tbody > tr .booking span {
       font-size: x-small;
       padding-left: 5px;
       color: #fff; }

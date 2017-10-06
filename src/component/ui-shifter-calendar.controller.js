@@ -3,10 +3,10 @@
 
     angular
         .module('UI.Shifter.Calendar')
-        .controller('uiShifterCalendarCtrl', ['$scope', '$document', '$window', 'uiShifterCalendarEvent',
+        .controller('uiShifterCalendarCtrl', ['$scope', '$document', '$moment', 'eventConst', 'uiShifterCalendarEvent',
             uiShifterCalendarCtrl]);
 
-    function uiShifterCalendarCtrl($scope, $document, $window, uiShifterCalendarEvent) {
+    function uiShifterCalendarCtrl($scope, $document, $moment, eventConst, uiShifterCalendarEvent) {
         var vm = this;
         vm.hours = [];
 
@@ -14,7 +14,7 @@
             var newHours = [];
             for (var i = startTime; i <= endTime; i++) {
                 newHours.push({
-                    time: moment({ hour: i, minute: 0 }).format("HH:mm")
+                    time: $moment({ hour: i, minute: 0 }).format("HH:mm")
                 });
             }
             vm.hours = newHours;
@@ -24,37 +24,19 @@
             //console.log('drawing events', vm.events);
             clearAllEvents();
             vm.events.forEach(function(element) {
-                uiShifterCalendarEvent.createEvent(
+                uiShifterCalendarEvent.createBooking(
+                    vm.id,
                     vm.id + '-' + element.from.substring(0, 2) +':00-' + element.day,
-                    element,
-                    getColumnCoordinates(element.day, element.from)
+                    element
                 );
             });
         };
 
         var clearAllEvents = function () {
-            var shifts = $document[0].getElementsByClassName('shift');
+            var shifts = $document[0].getElementsByClassName(eventConst.BOOKING);
 
             while(shifts.length > 0){
                 shifts[0].parentNode.removeChild(shifts[0]);
-            }
-        };
-
-        var getColumnCoordinates = function (day, hour) {
-            var col = $document[0].getElementById(vm.id + '-' + hour.substring(0, 2) + ':00' + '-' + day);
-            if (col !== null) {
-                var boundingRectCol = col.getBoundingClientRect();
-                var topCol = Math.round(boundingRectCol.top);
-                var leftCol = Math.round(boundingRectCol.left);
-                var widthCol = Math.round(boundingRectCol.width);
-                var heightCol = Math.round(boundingRectCol.height);
-            }
-
-            return {
-                left: $window.scrollX + leftCol + 3,
-                top: $window.scrollY + topCol + 2,
-                width: widthCol,
-                height:  heightCol
             }
         };
 

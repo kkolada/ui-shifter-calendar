@@ -4,7 +4,11 @@
   "description": "Calendar with shift event functionality.",
   "author": "Krzysztof Kolada",
   "license": "MIT",
-  "main": "./dist/uiShifterCalendar.js",
+  "main": [
+    "./dist/ui-shifter-calendar.js",
+    "./dist/ui-shifter-calendar.css",
+    "./dist/ui-shifter-calendar.css.map"
+  ],
   "ignore": [
     "**/.*",
     "node_modules",

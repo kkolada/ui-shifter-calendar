@@ -15,124 +15,16 @@ angular.module('src/templates/ui-shifter-calendar.tpl.html', []).run(['$template
     '<div class=ui-shifter-calendar><table id="{{vm.id + \'-Table\'}}" ng-class="[\'ui-shifter-calendar-week-wrapper\', {shadow: vm.shadow}]"><thead><tr><th></th><th ng-if=vm.dayFilter.mon>Monday</th><th ng-if=vm.dayFilter.tue>Tuesday</th><th ng-if=vm.dayFilter.wed>Wednesday</th><th ng-if=vm.dayFilter.thu>Thursday</th><th ng-if=vm.dayFilter.fri>Friday</th><th ng-if=vm.dayFilter.sat>Saturday</th><th ng-if=vm.dayFilter.sun>Sunday</th></tr><tr class=subhead><th></th><th ng-if=vm.dayFilter.mon>Team</th><th ng-if=vm.dayFilter.tue>Team</th><th ng-if=vm.dayFilter.wed>Team</th><th ng-if=vm.dayFilter.thu>Team</th><th ng-if=vm.dayFilter.fri>Team</th><th ng-if=vm.dayFilter.sat>Team</th><th ng-if=vm.dayFilter.sun>Team</th></tr></thead><tbody><tr class=first-half-hour ng-repeat-start="hour in vm.hours track by $index"><td id="{{vm.id + \'-\' + hour.time}}">{{hour.time}}</td><td id="{{vm.id + \'-\' + hour.time + \'-Monday\'}}" ng-if=vm.dayFilter.mon></td><td id="{{vm.id + \'-\' + hour.time + \'-Tuesday\'}}" ng-if=vm.dayFilter.tue></td><td id="{{vm.id + \'-\' + hour.time + \'-Wednesday\'}}" ng-if=vm.dayFilter.wed></td><td id="{{vm.id + \'-\' + hour.time + \'-Thursday\'}}" ng-if=vm.dayFilter.thu></td><td id="{{vm.id + \'-\' + hour.time + \'-Friday\'}}" ng-if=vm.dayFilter.fri></td><td id="{{vm.id + \'-\' + hour.time + \'-Saturday\'}}" ng-if=vm.dayFilter.sat></td><td id="{{vm.id + \'-\' + hour.time + \'-Sunday\'}}" ng-if=vm.dayFilter.sun></td></tr><tr class=second-half-hour ng-repeat-end><td>&nbsp;</td><td ng-if=vm.dayFilter.mon></td><td ng-if=vm.dayFilter.tue></td><td ng-if=vm.dayFilter.wed></td><td ng-if=vm.dayFilter.thu></td><td ng-if=vm.dayFilter.fri></td><td ng-if=vm.dayFilter.sat></td><td ng-if=vm.dayFilter.sun></td></tr></tbody></table></div>');
 }]);
 
-/* global toastr:false, moment:false */
 (function() {
     'use strict';
 
     angular
         .module('UI.Shifter.Calendar')
-        .constant('$moment', moment)
-        .constant('eventConst', {
-            BOOKING: 'booking'
-        });
-})();
-(function() {
-    'use strict';
-
-    angular
-        .module('UI.Shifter.Calendar')
-        .controller('uiShifterCalendarCtrl', ['$scope', '$document', '$moment', 'eventConst', 'uiShifterCalendarEvent',
-            uiShifterCalendarCtrl]);
-
-    function uiShifterCalendarCtrl($scope, $document, $moment, eventConst, uiShifterCalendarEvent) {
-        var vm = this;
-        vm.hours = [];
-
-        var countRows = function (startTime, endTime) {
-            var newHours = [];
-            for (var i = startTime; i <= endTime; i++) {
-                newHours.push({
-                    time: $moment({ hour: i, minute: 0 }).format("HH:mm")
-                });
-            }
-            vm.hours = newHours;
-        };
-
-        var drawEvents = function () {
-            clearAllEvents();
-            vm.events.forEach(function(element) {
-                uiShifterCalendarEvent.createBooking(vm.id, element, vm.hours[0].time);
-            });
-        };
-
-        var clearAllEvents = function () {
-            var shifts = $document[0].getElementsByClassName(eventConst.BOOKING);
-
-            while(shifts.length > 0){
-                shifts[0].parentNode.removeChild(shifts[0]);
-            }
-        };
-
-        $scope.$watch('vm.timeFilter', function (newValue, oldValue) {
-            countRows(newValue.start, newValue.end);
-            angular.element($document[0]).ready(function () {
-                drawEvents();
-            });
-        }, true);
-
-        $scope.$watch('vm.dayFilter', function (newValue, oldValue) {
-            angular.element($document[0]).ready(function () {
-                drawEvents();
-            });
-        }, true);
-
-        $scope.$watch('vm.events', function (newValue, oldValue) {
-            angular.element($document[0]).ready(function () {
-                drawEvents();
-            });
-        }, true);
-
-        /**
-         * INIT
-         */
-        angular.element($document[0]).ready(function () {
-            drawEvents();
-        });
-
-    }
-
-})();
+        .factory('uiShifterCalendarEvent', ['$document', '$window', '$moment', 'eventConst', 'uiShifterEvent',
+            uiShiftCalendarEvent]);
 
 
-(function() {
-    'use strict';
-
-    angular
-        .module('UI.Shifter.Calendar')
-        .directive('uiShifterCalendar', uiShiftCalendarDirective);
-
-    function link ($scope) {
-
-    }
-
-    function uiShiftCalendarDirective() {
-        return {
-            restrict: 'AE',
-            templateUrl: 'src/templates/ui-shifter-calendar.tpl.html',
-            controller: 'uiShifterCalendarCtrl',
-            controllerAs: 'vm',
-            scope: {
-                id: '@',
-                events: '=',
-                timeFilter: '=',
-                dayFilter: '=',
-                shadow: '='
-            },
-            bindToController: true,
-            link: link
-        };
-    }
-
-})();
-(function() {
-    'use strict';
-
-    angular
-        .module('UI.Shifter.Calendar')
-        .factory('uiShifterCalendarEvent', ['$document', '$window', '$moment', 'eventConst', uiShiftCalendarEvent]);
-
-
-    function uiShiftCalendarEvent($document, $window, $moment, eventConst) {
+    function uiShiftCalendarEvent($document, $window, $moment, eventConst, uiShifterEvent) {
         var uiShiftCalendarEvent = {};
 
         /**
@@ -155,11 +47,11 @@ angular.module('src/templates/ui-shifter-calendar.tpl.html', []).run(['$template
             var height = calculateHeight(calculateMinuteDiff(element.from, element.to), coordinates.height),
                 width = calculateWidth(coordinates.width, element.fraction);
 
-            if (height && height !== NaN) {
+            if (height && !isNaN(height)) {
                 newBooking[0].style.height = height + 'px';
             }
 
-            if (width && width !== NaN) {
+            if (width && !isNaN(width)) {
                 newBooking[0].style.width = width + 'px';
             }
 
@@ -167,11 +59,17 @@ angular.module('src/templates/ui-shifter-calendar.tpl.html', []).run(['$template
             var left = coordinates.left-1,
                 top = coordinates.top;
 
-            // top offset
-            top += calculateTopOffset(element.from, coordinates.height);
+            // set left offset (event position)
+            if (!isNaN(left)) {
+                left += calculateEventLeftOffset(element.position, element.fraction, coordinates.width);
+                newBooking[0].style.left = left + 'px';
+            }
 
-            newBooking[0].style.left = left + 'px';
-            newBooking[0].style.top = top + 'px';
+            // top offset
+            if (!isNaN(top)) {
+                top += calculateTopOffset(element.from, coordinates.height);
+                newBooking[0].style.top = top + 'px';
+            }
 
             // append element to the DOM, check whether event is full (top part cutting)
             var target = $document[0].getElementById(targetId);
@@ -182,8 +80,18 @@ angular.module('src/templates/ui-shifter-calendar.tpl.html', []).run(['$template
                 if (recalculatedValues.width !== 0 && recalculatedValues.height !== 0) {
                     newBooking[0].style.height = recalculatedValues.height + 'px';
                     newBooking[0].style.width = recalculatedValues.width + 'px';
+                    top = recalculatedValues.coordinates.top;
                     newBooking[0].style.top = top + 'px';
-                    var newTarget = $document[0].getElementById(componentId + '-' + timeFilterStart + '-' + element.day);
+                    left = recalculatedValues.coordinates.left-1;
+                    left += calculateEventLeftOffset(
+                        element.position,
+                        element.fraction,
+                        recalculatedValues.coordinates.width);
+                    newBooking[0].style.left = left + 'px';
+
+                    var newTarget = $document[0].getElementById(
+                        componentId + '-' + timeFilterStart + '-' + element.day
+                    );
                     angular.element(newTarget).append(newBooking);
                     newBooking.addClass('cutTop');
                 }
@@ -234,7 +142,8 @@ angular.module('src/templates/ui-shifter-calendar.tpl.html', []).run(['$template
          * id-09:00-Monday table cell. In order to present offset on screen calculate relative space from 9:00 to 9:20
          * as table row height.
          *
-         * Returns top offset from table cell (rounded and shrunk by  ), when there is time difference between given time and full hour.
+         * Returns top offset from table cell (rounded and shrunk byc2), when there is time difference between given
+         * time and full hour.
          *
          * @param timeFrom
          * @param colHeight
@@ -246,10 +155,10 @@ angular.module('src/templates/ui-shifter-calendar.tpl.html', []).run(['$template
                 offset = 0;
 
             if (diff > 0) {
-                var remainder = diff%30,
-                    halfHours = (diff-remainder)/30,
-                    relative = remainder/30;
-                offset = (colHeight*halfHours + Math.round(colHeight*relative+0.5))-2;
+                var remainder = diff % 30,
+                    halfHours = (diff - remainder) / 30,
+                    relative = remainder / 30;
+                offset = (colHeight * halfHours + Math.round((colHeight * relative) + 0.5)) - 1;
             }
 
             return offset;
@@ -266,13 +175,12 @@ angular.module('src/templates/ui-shifter-calendar.tpl.html', []).run(['$template
          * @returns {number}
          */
         function calculateHeight(time, colHeight) {
-            var remainder = time%30,
-                halfHours = (time-remainder)/30,
-                relative = remainder/30;
+            var remainder = time % 30,
+                halfHours = (time-remainder) / 30,
+                relative = remainder / 30;
 
-            return (colHeight*halfHours + Math.round(colHeight*relative+0.5))-5;
+            return (colHeight * halfHours + Math.round(colHeight * relative)) - 5;
         }
-
 
         /**
          * Calculate event width. Method takes two parameters - current column width and fraction of field in string
@@ -285,11 +193,46 @@ angular.module('src/templates/ui-shifter-calendar.tpl.html', []).run(['$template
          * @returns {number}
          */
         function calculateWidth(colWidth, fraction) {
-            var numerator = parseInt(fraction.substring(0, 1)),
-                denominator = parseInt(fraction.substring(2, 3)),
-                fractionValue = numerator/denominator;
+            var parsedFraction = parseFraction(fraction),
+                fractionValue = parsedFraction.numerator/parsedFraction.denominator;
 
-            return (Math.round(colWidth*fractionValue))-5;
+            return (Math.round(colWidth * fractionValue)) - 5;
+        }
+
+        /**
+         * Takes fraction as a string (for example '2/4') and returns parsed values as object with two fields.
+         *
+         * @param fraction
+         * @returns {{numerator: Number, denominator: Number}}
+         */
+        function parseFraction(fraction) {
+            var _numerator = parseInt(fraction.substring(0, 1)),
+                _denominator = parseInt(fraction.substring(2, 3));
+
+            return {
+                numerator: _numerator,
+                denominator: _denominator
+            }
+        }
+
+        /**
+         * Method takes three parameters - position of the event set by pack algorithm, fraction as a string and current
+         * width of column. After parsing fraction it calculates the default virtual column width - for example 1/4 of
+         * standard column. Returns offset from the left side as a number.
+         *
+         * When element is at the left side (position 0 it returns 0), if element is in second virtual column (position
+         * 1 - it returns 1/4 of column).
+         *
+         * @param position
+         * @param fraction
+         * @param colWidth
+         * @returns {number}
+         */
+        function calculateEventLeftOffset(position, fraction, colWidth) {
+            var parsedFraction = parseFraction(fraction),
+                fractionValue = 1/parsedFraction.denominator;
+
+            return (Math.round(colWidth * fractionValue)) * position;
         }
 
         /**
@@ -390,6 +333,194 @@ angular.module('src/templates/ui-shifter-calendar.tpl.html', []).run(['$template
 
         // public factory methods
         return uiShiftCalendarEvent;
+
+    }
+
+})();
+/* global toastr:false, moment:false */
+(function() {
+    'use strict';
+
+    angular
+        .module('UI.Shifter.Calendar')
+        .constant('$moment', moment)
+        .constant('eventConst', {
+            BOOKING: 'booking'
+        });
+})();
+(function() {
+    'use strict';
+
+    angular
+        .module('UI.Shifter.Calendar')
+        .controller('uiShifterCalendarCtrl', ['$scope', '$document', '$moment', 'eventConst', 'uiShifterEvent',
+            'uiShifterCalendarEvent', uiShifterCalendarCtrl]);
+
+    function uiShifterCalendarCtrl($scope, $document, $moment, eventConst, uiShifterEvent, uiShifterCalendarEvent) {
+        var vm = this,
+            events = [];
+        vm.hours = [];
+
+        var countRows = function (startTime, endTime) {
+            var newHours = [];
+            for (var i = startTime; i <= endTime; i++) {
+                newHours.push({
+                    time: $moment({ hour: i, minute: 0 }).format("HH:mm")
+                });
+            }
+            vm.hours = newHours;
+        };
+
+        var drawEvents = function () {
+            clearAllEvents();
+            events.forEach(function(element) {
+                uiShifterCalendarEvent.createBooking(vm.id, element, vm.hours[0].time);
+            });
+        };
+
+        var clearAllEvents = function () {
+            var shifts = $document[0].getElementsByClassName(eventConst.BOOKING);
+
+            while(shifts.length > 0){
+                shifts[0].parentNode.removeChild(shifts[0]);
+            }
+        };
+
+        $scope.$watch('vm.timeFilter', function (newValue, oldValue) {
+            countRows(newValue.start, newValue.end);
+            angular.element($document[0]).ready(function () {
+                drawEvents();
+            });
+        }, true);
+
+        $scope.$watch('vm.dayFilter', function (newValue, oldValue) {
+            angular.element($document[0]).ready(function () {
+                drawEvents();
+            });
+        }, true);
+
+        $scope.$watch('vm.events', function (newValue, oldValue) {
+            events = uiShifterEvent.initEvents(vm.events);
+            angular.element($document[0]).ready(function () {
+                drawEvents();
+            });
+        }, true);
+
+        /**
+         * INIT
+         */
+        angular.element($document[0]).ready(function () {
+            drawEvents();
+        });
+
+    }
+
+})();
+
+
+(function() {
+    'use strict';
+
+    angular
+        .module('UI.Shifter.Calendar')
+        .directive('uiShifterCalendar', uiShiftCalendarDirective);
+
+    function link ($scope) {
+
+    }
+
+    function uiShiftCalendarDirective() {
+        return {
+            restrict: 'AE',
+            templateUrl: 'src/templates/ui-shifter-calendar.tpl.html',
+            controller: 'uiShifterCalendarCtrl',
+            controllerAs: 'vm',
+            scope: {
+                id: '@',
+                events: '=',
+                timeFilter: '=',
+                dayFilter: '=',
+                shadow: '='
+            },
+            bindToController: true,
+            link: link
+        };
+    }
+
+})();
+(function() {
+    'use strict';
+
+    angular
+        .module('UI.Shifter.Calendar')
+        .factory('uiShifterEvent', uiShifterEvent);
+
+
+    function uiShifterEvent() {
+        var uiShifterEvent = {};
+
+        /**
+         * Takes array as an argument and creates deep copy of it in order to sort events and preserve angular from
+         * triggering infinite watcher loop (if vm.events from scope is used). Compares only days (converted to
+         * numbers).
+         *
+         * @param events
+         * @returns {*}
+         */
+        uiShifterEvent.initEvents = function (events) {
+            //console.log('unsorted', events);
+            var eventsToSort = angular.copy(events);
+
+            eventsToSort.sort(function (a, b) {
+                var aDay = convertDaysToNumbers(a.day),
+                    bDay = convertDaysToNumbers(b.day);
+
+                return aDay - bDay;
+            });
+
+            //console.log('sorted', eventsToSort);
+
+            return eventsToSort;
+        };
+
+        /**
+         * Helper method in order to optimise sort functionality. Takes string (day) as a parameter and converts it
+         * to number as follows: 0-Monday, 1-Tuesday, 2-Wednesday, 3-Thursday, 4-Friday, 5-Saturday, 6-Sunday.
+         *
+         * @param day
+         * @returns {number}
+         */
+        function convertDaysToNumbers(day) {
+            var convertedDay = -1;
+            switch(day) {
+                case 'Monday':
+                    convertedDay = 0;
+                    break;
+                case 'Tuesday':
+                    convertedDay = 1;
+                    break;
+                case 'Wednesday':
+                    convertedDay = 2;
+                    break;
+                case 'Thursday':
+                    convertedDay = 3;
+                    break;
+                case 'Friday':
+                    convertedDay = 4;
+                    break;
+                case 'Sunday':
+                    convertedDay = 5;
+                    break;
+                case 'Saturday':
+                    convertedDay = 6;
+                    break;
+            }
+
+            return convertedDay;
+        }
+
+        // public factory methods
+        return uiShifterEvent;
 
     }
 

@@ -3,10 +3,11 @@
 
     angular
         .module('UI.Shifter.Calendar')
-        .factory('uiShifterCalendarEvent', ['$document', '$window', '$moment', 'eventConst', uiShiftCalendarEvent]);
+        .factory('uiShifterCalendarEvent', ['$document', '$window', '$moment', 'eventConst', 'uiShifterEvent',
+            uiShiftCalendarEvent]);
 
 
-    function uiShiftCalendarEvent($document, $window, $moment, eventConst) {
+    function uiShiftCalendarEvent($document, $window, $moment, eventConst, uiShifterEvent) {
         var uiShiftCalendarEvent = {};
 
         /**
@@ -29,11 +30,11 @@
             var height = calculateHeight(calculateMinuteDiff(element.from, element.to), coordinates.height),
                 width = calculateWidth(coordinates.width, element.fraction);
 
-            if (height && height !== NaN) {
+            if (height && !isNaN(height)) {
                 newBooking[0].style.height = height + 'px';
             }
 
-            if (width && width !== NaN) {
+            if (width && !isNaN(width)) {
                 newBooking[0].style.width = width + 'px';
             }
 
@@ -41,11 +42,17 @@
             var left = coordinates.left-1,
                 top = coordinates.top;
 
-            // top offset
-            top += calculateTopOffset(element.from, coordinates.height);
+            // set left offset (event position)
+            if (!isNaN(left)) {
+                left += calculateEventLeftOffset(element.position, element.fraction, coordinates.width);
+                newBooking[0].style.left = left + 'px';
+            }
 
-            newBooking[0].style.left = left + 'px';
-            newBooking[0].style.top = top + 'px';
+            // top offset
+            if (!isNaN(top)) {
+                top += calculateTopOffset(element.from, coordinates.height);
+                newBooking[0].style.top = top + 'px';
+            }
 
             // append element to the DOM, check whether event is full (top part cutting)
             var target = $document[0].getElementById(targetId);
@@ -56,8 +63,18 @@
                 if (recalculatedValues.width !== 0 && recalculatedValues.height !== 0) {
                     newBooking[0].style.height = recalculatedValues.height + 'px';
                     newBooking[0].style.width = recalculatedValues.width + 'px';
+                    top = recalculatedValues.coordinates.top;
                     newBooking[0].style.top = top + 'px';
-                    var newTarget = $document[0].getElementById(componentId + '-' + timeFilterStart + '-' + element.day);
+                    left = recalculatedValues.coordinates.left-1;
+                    left += calculateEventLeftOffset(
+                        element.position,
+                        element.fraction,
+                        recalculatedValues.coordinates.width);
+                    newBooking[0].style.left = left + 'px';
+
+                    var newTarget = $document[0].getElementById(
+                        componentId + '-' + timeFilterStart + '-' + element.day
+                    );
                     angular.element(newTarget).append(newBooking);
                     newBooking.addClass('cutTop');
                 }
@@ -108,7 +125,8 @@
          * id-09:00-Monday table cell. In order to present offset on screen calculate relative space from 9:00 to 9:20
          * as table row height.
          *
-         * Returns top offset from table cell (rounded and shrunk by  ), when there is time difference between given time and full hour.
+         * Returns top offset from table cell (rounded and shrunk byc2), when there is time difference between given
+         * time and full hour.
          *
          * @param timeFrom
          * @param colHeight
@@ -120,10 +138,10 @@
                 offset = 0;
 
             if (diff > 0) {
-                var remainder = diff%30,
-                    halfHours = (diff-remainder)/30,
-                    relative = remainder/30;
-                offset = (colHeight*halfHours + Math.round(colHeight*relative+0.5))-2;
+                var remainder = diff % 30,
+                    halfHours = (diff - remainder) / 30,
+                    relative = remainder / 30;
+                offset = (colHeight * halfHours + Math.round((colHeight * relative) + 0.5)) - 1;
             }
 
             return offset;
@@ -140,13 +158,12 @@
          * @returns {number}
          */
         function calculateHeight(time, colHeight) {
-            var remainder = time%30,
-                halfHours = (time-remainder)/30,
-                relative = remainder/30;
+            var remainder = time % 30,
+                halfHours = (time-remainder) / 30,
+                relative = remainder / 30;
 
-            return (colHeight*halfHours + Math.round(colHeight*relative+0.5))-5;
+            return (colHeight * halfHours + Math.round(colHeight * relative)) - 5;
         }
-
 
         /**
          * Calculate event width. Method takes two parameters - current column width and fraction of field in string
@@ -159,11 +176,46 @@
          * @returns {number}
          */
         function calculateWidth(colWidth, fraction) {
-            var numerator = parseInt(fraction.substring(0, 1)),
-                denominator = parseInt(fraction.substring(2, 3)),
-                fractionValue = numerator/denominator;
+            var parsedFraction = parseFraction(fraction),
+                fractionValue = parsedFraction.numerator/parsedFraction.denominator;
 
-            return (Math.round(colWidth*fractionValue))-5;
+            return (Math.round(colWidth * fractionValue)) - 5;
+        }
+
+        /**
+         * Takes fraction as a string (for example '2/4') and returns parsed values as object with two fields.
+         *
+         * @param fraction
+         * @returns {{numerator: Number, denominator: Number}}
+         */
+        function parseFraction(fraction) {
+            var _numerator = parseInt(fraction.substring(0, 1)),
+                _denominator = parseInt(fraction.substring(2, 3));
+
+            return {
+                numerator: _numerator,
+                denominator: _denominator
+            }
+        }
+
+        /**
+         * Method takes three parameters - position of the event set by pack algorithm, fraction as a string and current
+         * width of column. After parsing fraction it calculates the default virtual column width - for example 1/4 of
+         * standard column. Returns offset from the left side as a number.
+         *
+         * When element is at the left side (position 0 it returns 0), if element is in second virtual column (position
+         * 1 - it returns 1/4 of column).
+         *
+         * @param position
+         * @param fraction
+         * @param colWidth
+         * @returns {number}
+         */
+        function calculateEventLeftOffset(position, fraction, colWidth) {
+            var parsedFraction = parseFraction(fraction),
+                fractionValue = 1/parsedFraction.denominator;
+
+            return (Math.round(colWidth * fractionValue)) * position;
         }
 
         /**

@@ -3,11 +3,12 @@
 
     angular
         .module('UI.Shifter.Calendar')
-        .controller('uiShifterCalendarCtrl', ['$scope', '$document', '$moment', 'eventConst', 'uiShifterCalendarEvent',
-            uiShifterCalendarCtrl]);
+        .controller('uiShifterCalendarCtrl', ['$scope', '$document', '$moment', 'eventConst', 'uiShifterEvent',
+            'uiShifterCalendarEvent', uiShifterCalendarCtrl]);
 
-    function uiShifterCalendarCtrl($scope, $document, $moment, eventConst, uiShifterCalendarEvent) {
-        var vm = this;
+    function uiShifterCalendarCtrl($scope, $document, $moment, eventConst, uiShifterEvent, uiShifterCalendarEvent) {
+        var vm = this,
+            events = [];
         vm.hours = [];
 
         var countRows = function (startTime, endTime) {
@@ -22,7 +23,7 @@
 
         var drawEvents = function () {
             clearAllEvents();
-            vm.events.forEach(function(element) {
+            events.forEach(function(element) {
                 uiShifterCalendarEvent.createBooking(vm.id, element, vm.hours[0].time);
             });
         };
@@ -49,6 +50,7 @@
         }, true);
 
         $scope.$watch('vm.events', function (newValue, oldValue) {
+            events = uiShifterEvent.initEvents(vm.events);
             angular.element($document[0]).ready(function () {
                 drawEvents();
             });

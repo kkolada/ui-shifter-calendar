@@ -3,11 +3,10 @@
 
     angular
         .module('UI.Shifter.Calendar')
-        .factory('uiShifterCalendarEvent', ['$document', '$window', '$moment', 'eventConst', 'uiShifterEvent',
-            uiShiftCalendarEvent]);
+        .factory('uiShifterCalendarEvent', ['$document', '$window', '$moment', 'eventConst', uiShiftCalendarEvent]);
 
 
-    function uiShiftCalendarEvent($document, $window, $moment, eventConst, uiShifterEvent) {
+    function uiShiftCalendarEvent($document, $window, $moment, eventConst) {
         var uiShiftCalendarEvent = {};
 
         /**

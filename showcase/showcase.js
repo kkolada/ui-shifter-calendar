@@ -50,85 +50,85 @@ shifterCalendarShowcaseApp.controller('ShowcaseCtrl', function($scope) {
             day: 'Monday',
             from: '03:00',
             to: '05:00',
-            fraction: '2/4',
-            position: 0
+            fraction: '2/4'
         },
         {
             day: 'Tuesday',
             from: '10:00',
             to: '11:45',
-            fraction: '1/2',
-            position: 0
+            fraction: '1/2'
         },
         {
             day: 'Tuesday',
             from: '05:20',
             to: '10:45',
-            fraction: '3/4',
-            position: 0
+            fraction: '3/4'
         },
         {
             day: 'Monday',
             from: '05:10',
             to: '07:45',
-            fraction: '1/4',
-            position: 3
+            fraction: '1/4'
         },
         {
             day: 'Wednesday',
             from: '07:13',
             to: '07:28',
-            fraction: '5/8',
-            position: 0
+            fraction: '5/8'
         },
         {
             day: 'Monday',
             from: '05:00',
             to: '06:30',
-            fraction: '1/4',
-            position: 1
+            fraction: '1/4'
         },
         {
             day: 'Friday',
             from: '02:00',
             to: '03:15',
-            fraction: '7/8',
-            position: 0
+            fraction: '7/8'
         },
         {
             day: 'Monday',
             from: '03:15',
             to: '7:00',
-            fraction: '1/4',
-            position: 2
+            fraction: '1/4'
         },
         {
             day: 'Sunday',
             from: '04:55',
             to: '11:45',
-            fraction: '2/8',
-            position: 0
+            fraction: '2/8'
         },
         {
             day: 'Monday',
             from: '05:00',
             to: '09:00',
-            fraction: '1/4',
-            position: 0
+            fraction: '1/4'
         },
         {
             day: 'Thursday',
             from: '07:00',
             to: '07:15',
-            fraction: '3/8',
-            position: 0
+            fraction: '3/8'
         },
         {
             day: 'Monday',
             from: '08:30',
             to: '10:00',
-            fraction: '3/4',
-            position: 1
+            fraction: '3/4'
+        },
+        {
+            day: 'Monday',
+            from: '02:00',
+            to: '03:00',
+            fraction: '2/3'
+        },
+        {
+            day: 'Monday',
+            from: '09:00',
+            to: '11:00',
+            fraction: '1/4'
         }
     ];
     $scope.addNewEvent = function() {

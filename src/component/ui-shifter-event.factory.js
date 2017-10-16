@@ -292,10 +292,10 @@
                 case 'Friday':
                     convertedDay = 4;
                     break;
-                case 'Sunday':
+                case 'Saturday':
                     convertedDay = 5;
                     break;
-                case 'Saturday':
+                case 'Sunday':
                     convertedDay = 6;
                     break;
             }

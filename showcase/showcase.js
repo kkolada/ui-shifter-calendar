@@ -129,6 +129,30 @@ shifterCalendarShowcaseApp.controller('ShowcaseCtrl', function($scope) {
             from: '09:00',
             to: '11:00',
             fraction: '1/4'
+        },
+        {
+            day: 'Saturday',
+            from: '03:00',
+            to: '04:00',
+            fraction: '1/3'
+        },
+        {
+            day: 'Saturday',
+            from: '05:00',
+            to: '06:00',
+            fraction: '1/3'
+        },
+        {
+            day: 'Saturday',
+            from: '04:00',
+            to: '05:00',
+            fraction: '1/4'
+        },
+        {
+            day: 'Saturday',
+            from: '03:00',
+            to: '06:00',
+            fraction: '2/3'
         }
     ];
     $scope.addNewEvent = function() {

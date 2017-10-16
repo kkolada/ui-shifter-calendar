@@ -1,1 +1,7 @@
-angular.module('UI.Shifter.Calendar', []);
+(function() {
+    'use strict';
+
+    angular
+        .module('UI.Shifter.Calendar', []);
+
+})();

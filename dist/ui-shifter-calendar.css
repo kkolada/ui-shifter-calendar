@@ -1,0 +1,70 @@
+.ui-shifter-calendar {
+  display: block; }
+  .ui-shifter-calendar table {
+    width: 100%;
+    border-spacing: 0px;
+    border-collapse: collapse;
+    table-layout: auto; }
+    .ui-shifter-calendar table.shadow {
+      -webkit-box-shadow: 4px 4px 12px -4px #cfcfcf;
+      box-shadow: 4px 4px 12px -4px #cfcfcf; }
+  .ui-shifter-calendar table.ui-shifter-calendar-week-wrapper thead > tr > th {
+    padding: 4px 30px;
+    border: 1px solid #cfcfcf;
+    font-weight: normal;
+    min-width: 80px; }
+    .ui-shifter-calendar table.ui-shifter-calendar-week-wrapper thead > tr > th:first-child {
+      padding: 4px 0;
+      border-top: none;
+      border-left: none;
+      border-bottom: none;
+      min-width: 30px; }
+  .ui-shifter-calendar table.ui-shifter-calendar-week-wrapper thead > tr.subhead > th {
+    font-size: 0.8em;
+    border-top: none;
+    border-left: none; }
+  .ui-shifter-calendar table.ui-shifter-calendar-week-wrapper tbody > tr .booking {
+    cursor: pointer;
+    position: absolute;
+    width: 70px;
+    height: 60px;
+    display: block;
+    background: #ff0000;
+    border-radius: 4px;
+    border: 1px solid #c80000;
+    opacity: .8;
+    transition: background .3s ease .0s; }
+    .ui-shifter-calendar table.ui-shifter-calendar-week-wrapper tbody > tr .booking:hover {
+      background: #c80000; }
+    .ui-shifter-calendar table.ui-shifter-calendar-week-wrapper tbody > tr .booking span {
+      font-size: x-small;
+      padding-left: 5px;
+      color: #fff; }
+    .ui-shifter-calendar table.ui-shifter-calendar-week-wrapper tbody > tr .booking.cutTop {
+      border-radius: 0 0 4px 4px;
+      border-top: none; }
+    .ui-shifter-calendar table.ui-shifter-calendar-week-wrapper tbody > tr .booking.cutBottom {
+      border-radius: 4px 4px 0 0;
+      border-bottom: none; }
+    .ui-shifter-calendar table.ui-shifter-calendar-week-wrapper tbody > tr .booking.cutTopAndBottom {
+      border-radius: 0 0 0 0;
+      border-top: none;
+      border-bottom: none; }
+  .ui-shifter-calendar table.ui-shifter-calendar-week-wrapper tbody > tr > td {
+    border: 1px solid #cfcfcf;
+    font-weight: normal;
+    font-size: small;
+    min-width: 80px;
+    vertical-align: top;
+    height: 15px; }
+    .ui-shifter-calendar table.ui-shifter-calendar-week-wrapper tbody > tr > td:first-child {
+      padding: 4px 6px;
+      font-weight: lighter;
+      text-align: right;
+      min-width: 30px; }
+  .ui-shifter-calendar table.ui-shifter-calendar-week-wrapper tbody > tr.first-half-hour > td {
+    border-bottom-style: dotted; }
+  .ui-shifter-calendar table.ui-shifter-calendar-week-wrapper tbody > tr.second-half-hour > td {
+    border-top-style: dotted; }
+
+/*# sourceMappingURL=ui-shifter-calendar.css.map */

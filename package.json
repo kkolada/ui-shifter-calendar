@@ -7,11 +7,7 @@
   "scripts": {
     "postinstall": "./node_modules/.bin/bower install"
   },
-  "main": [
-    "./dist/ui-shifter-calendar.js",
-    "./dist/ui-shifter-calendar.css",
-    "./dist/ui-shifter-calendar.css.map"
-  ],
+  "main": "./dist/ui-shifter-calendar.js",
   "devDependencies": {
     "bower": "^1.8.2",
     "grunt": "^0.4.5",

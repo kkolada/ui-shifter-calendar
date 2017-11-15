@@ -50,7 +50,7 @@
         }, true);
 
         $scope.$watch('vm.events', function (newValue, oldValue) {
-            events = uiShifterEvent.initEvents(vm.events);
+            events = uiShifterEvent.sortEvents(vm.events);
             angular.element($document[0]).ready(function () {
                 drawEvents();
             });

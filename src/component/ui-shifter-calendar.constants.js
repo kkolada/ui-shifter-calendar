@@ -6,6 +6,8 @@
         .module('UI.Shifter.Calendar')
         .constant('$moment', moment)
         .constant('eventConst', {
-            BOOKING: 'booking'
+            OPEN_HOUR: 'openHour',
+            BOOKING: 'booking',
+            SHIFT: 'shift'
         });
 })();

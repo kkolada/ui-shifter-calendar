@@ -30,7 +30,7 @@
         };
 
         var clearAllEvents = function () {
-            var shifts = $document[0].getElementsByClassName(eventConst.BOOKING);
+            var shifts = $document[0].getElementsByClassName(eventConst.EVENT_CLASS);
 
             while(shifts.length > 0){
                 shifts[0].parentNode.removeChild(shifts[0]);

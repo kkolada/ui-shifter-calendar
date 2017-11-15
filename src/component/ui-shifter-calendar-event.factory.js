@@ -20,8 +20,9 @@
         uiShiftCalendarEvent.createBooking = function (componentId, element, timeFilterStart) {
             var targetId = componentId + '-' + element.from.substring(0, 2) +':00-' + element.day + '-' + element.team,
                 coordinates = getColumnCoordinates(componentId, element.day, element.team, element.from),
+                eventClass = getEventClass(element.type),
                 newBooking = angular.element(
-                '<div class="' + eventConst.BOOKING + '"><span>' + element.fraction + '<br>' +
+                '<div class="event ' + eventClass + '"><span>' + element.fraction + '<br>' +
                 element.from + ' - ' + element.to + '</span></div>'
             );
 
@@ -312,6 +313,25 @@
                 height: recalculatedHeight,
                 width: recalculatedWidth
             };
+        }
+
+        function getEventClass(type) {
+            var eventClass = '';
+            switch(type) {
+                case eventConst.OPEN_HOUR:
+                    eventClass = 'oh';
+                    break;
+                case eventConst.BOOKING:
+                    eventClass = 'booking';
+                    break;
+                case eventConst.SHIFT:
+                    eventClass = 'shift';
+                    break;
+                default:
+                    break;
+            }
+
+            return eventClass;
         }
 
         // public factory methods

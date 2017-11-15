@@ -83,6 +83,7 @@
         <input type="text" id="eventPosition" ng-model="position" placeholder="[0, 1, 2, 3, ...]" />
         <select name="eventTypeSelect" id="eventType" ng-options="option.t for option in data.availableTypes track by option.t"
                 ng-model="data.typeSelected"></select>
+        <input type="text" id="eventTeam" ng-model="teamName" placeholder="TeamName" />
         <button ng-click="addNewEvent()">Add event</button>
         <hr style="border: none; margin-bottom: 30px;">
         <div style="width: 90%; margin: auto;">

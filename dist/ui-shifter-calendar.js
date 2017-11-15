@@ -38,8 +38,9 @@ angular.module('src/templates/ui-shifter-calendar.tpl.html', []).run(['$template
         uiShiftCalendarEvent.createBooking = function (componentId, element, timeFilterStart) {
             var targetId = componentId + '-' + element.from.substring(0, 2) +':00-' + element.day + '-' + element.team,
                 coordinates = getColumnCoordinates(componentId, element.day, element.team, element.from),
+                eventClass = getEventClass(element.type),
                 newBooking = angular.element(
-                '<div class="' + eventConst.BOOKING + '"><span>' + element.fraction + '<br>' +
+                '<div class="event ' + eventClass + '"><span>' + element.fraction + '<br>' +
                 element.from + ' - ' + element.to + '</span></div>'
             );
 
@@ -332,6 +333,25 @@ angular.module('src/templates/ui-shifter-calendar.tpl.html', []).run(['$template
             };
         }
 
+        function getEventClass(type) {
+            var eventClass = '';
+            switch(type) {
+                case eventConst.OPEN_HOUR:
+                    eventClass = 'oh';
+                    break;
+                case eventConst.BOOKING:
+                    eventClass = 'booking';
+                    break;
+                case eventConst.SHIFT:
+                    eventClass = 'shift';
+                    break;
+                default:
+                    break;
+            }
+
+            return eventClass;
+        }
+
         // public factory methods
         return uiShiftCalendarEvent;
 
@@ -346,6 +366,7 @@ angular.module('src/templates/ui-shifter-calendar.tpl.html', []).run(['$template
         .module('UI.Shifter.Calendar')
         .constant('$moment', moment)
         .constant('eventConst', {
+            EVENT_CLASS: 'event',
             OPEN_HOUR: 'openHour',
             BOOKING: 'booking',
             SHIFT: 'shift'
@@ -383,7 +404,7 @@ angular.module('src/templates/ui-shifter-calendar.tpl.html', []).run(['$template
         };
 
         var clearAllEvents = function () {
-            var shifts = $document[0].getElementsByClassName(eventConst.BOOKING);
+            var shifts = $document[0].getElementsByClassName(eventConst.EVENT_CLASS);
 
             while(shifts.length > 0){
                 shifts[0].parentNode.removeChild(shifts[0]);

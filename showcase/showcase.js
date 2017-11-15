@@ -63,12 +63,75 @@ shifterCalendarShowcaseApp.controller('ShowcaseCtrl', function($scope) {
             team: 'TeamA'
         },
         {
+            day: 'Tuesday',
+            from: '01:00',
+            to: '12:00',
+            fraction: '1/1',
+            position: 0,
+            type: 'openHour',
+            team: 'TeamA'
+        },
+        {
+            day: 'Wednesday',
+            from: '05:00',
+            to: '10:00',
+            fraction: '1/1',
+            position: 0,
+            type: 'openHour',
+            team: 'TeamA'
+        },
+        {
+            day: 'Thursday',
+            from: '05:00',
+            to: '09:00',
+            fraction: '1/1',
+            position: 0,
+            type: 'openHour',
+            team: 'TeamA'
+        },
+        {
+            day: 'Friday',
+            from: '01:00',
+            to: '04:00',
+            fraction: '1/1',
+            position: 0,
+            type: 'openHour',
+            team: 'TeamA'
+        },
+        {
+            day: 'Saturday',
+            from: '01:00',
+            to: '07:00',
+            fraction: '1/1',
+            position: 0,
+            type: 'openHour',
+            team: 'TeamA'
+        },
+        {
+            day: 'Sunday',
+            from: '04:00',
+            to: '13:00',
+            fraction: '1/1',
+            position: 0,
+            type: 'openHour',
+            team: 'TeamA'
+        },
+        {
             day: 'Monday',
             from: '03:00',
             to: '05:00',
             fraction: '2/4',
             position: 0,
             type: 'shift',
+            team: 'TeamB'
+        },
+        {
+            day: 'Monday',
+            from: '02:00',
+            to: '06:00',
+            fraction: '1/2',
+            position: 0,
+            type: 'openHour',
             team: 'TeamB'
         },
         {
@@ -223,6 +286,15 @@ shifterCalendarShowcaseApp.controller('ShowcaseCtrl', function($scope) {
             position: 1,
             type: 'booking',
             team: 'TeamA'
+        },
+        {
+            day: 'Monday',
+            from: '01:00',
+            to: '16:00',
+            fraction: '1/1',
+            position: 0,
+            type: 'openHour',
+            team: 'TeamA'
         }
     ];
     $scope.addNewEvent = function() {
@@ -232,7 +304,8 @@ shifterCalendarShowcaseApp.controller('ShowcaseCtrl', function($scope) {
             to: $scope.eventEndTime,
             fraction: $scope.eventFraction,
             position: $scope.position,
-            type: $scope.data.typeSelected.t
+            type: $scope.data.typeSelected.t,
+            team: $scope.teamName
         });
     };
 

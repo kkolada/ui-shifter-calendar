@@ -22,8 +22,8 @@
                 coordinates = getColumnCoordinates(componentId, element.day, element.team, element.from),
                 eventClass = getEventClass(element.type),
                 newBooking = angular.element(
-                '<div class="event ' + eventClass + '"><span>' + element.fraction + '<br>' +
-                element.from + ' - ' + element.to + '</span></div>'
+                '<div class="event ' + eventClass + '"><div>' + element.fraction + '<br>' +
+                element.from + ' - ' + element.to + '</div></div>'
             );
 
             // set event's width and height

@@ -28,14 +28,13 @@
     width: 70px;
     height: 60px;
     display: block;
-    border: 1px solid #a9a9a9;
     border-radius: 4px;
     opacity: .9;
-    transition: background .3s ease .0s; }
-    .ui-shifter-calendar table.ui-shifter-calendar-week-wrapper tbody > tr .event span {
+    transition: background .3s ease .0s;
+    overflow: hidden; }
+    .ui-shifter-calendar table.ui-shifter-calendar-week-wrapper tbody > tr .event div {
       font-size: x-small;
-      padding-left: 5px;
-      color: #fff; }
+      color: #000; }
     .ui-shifter-calendar table.ui-shifter-calendar-week-wrapper tbody > tr .event.cutTop {
       border-radius: 0 0 4px 4px;
       border-top: none; }
@@ -47,17 +46,25 @@
       border-top: none;
       border-bottom: none; }
     .ui-shifter-calendar table.ui-shifter-calendar-week-wrapper tbody > tr .event.oh {
-      background: #eeeeee; }
+      background: #eeeeee;
+      border: 1px solid #cbcbcb; }
       .ui-shifter-calendar table.ui-shifter-calendar-week-wrapper tbody > tr .event.oh:hover {
-        background: #c8c8c8; }
+        background: #cbcbcb;
+        border: 1px solid #a8a8a8; }
     .ui-shifter-calendar table.ui-shifter-calendar-week-wrapper tbody > tr .event.booking {
-      background: #63e468; }
+      background: #63e468;
+      border: 1px solid #5cc161; }
       .ui-shifter-calendar table.ui-shifter-calendar-week-wrapper tbody > tr .event.booking:hover {
-        background: #58af58; }
+        background: #5cc161;
+        border: 1px solid #4f9e4f; }
     .ui-shifter-calendar table.ui-shifter-calendar-week-wrapper tbody > tr .event.shift {
-      background: #3d8c40; }
+      background: #3d8c40;
+      border: 1px solid #326934; }
       .ui-shifter-calendar table.ui-shifter-calendar-week-wrapper tbody > tr .event.shift:hover {
-        background: #1a381a; }
+        background: #326934;
+        border: 1px solid #214621; }
+      .ui-shifter-calendar table.ui-shifter-calendar-week-wrapper tbody > tr .event.shift div {
+        color: #fff; }
   .ui-shifter-calendar table.ui-shifter-calendar-week-wrapper tbody > tr > td {
     border: 1px solid #cfcfcf;
     font-weight: normal;

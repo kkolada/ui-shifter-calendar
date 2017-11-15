@@ -40,8 +40,8 @@ angular.module('src/templates/ui-shifter-calendar.tpl.html', []).run(['$template
                 coordinates = getColumnCoordinates(componentId, element.day, element.team, element.from),
                 eventClass = getEventClass(element.type),
                 newBooking = angular.element(
-                '<div class="event ' + eventClass + '"><span>' + element.fraction + '<br>' +
-                element.from + ' - ' + element.to + '</span></div>'
+                '<div class="event ' + eventClass + '"><div>' + element.fraction + '<br>' +
+                element.from + ' - ' + element.to + '</div></div>'
             );
 
             // set event's width and height
@@ -413,30 +413,33 @@ angular.module('src/templates/ui-shifter-calendar.tpl.html', []).run(['$template
 
         $scope.$watch('vm.timeFilter', function (newValue, oldValue) {
             countRows(newValue.start, newValue.end);
-            angular.element($document[0]).ready(function () {
-                drawEvents();
-            });
+            redrawEvents();
         }, true);
 
-        $scope.$watchGroup(['vm.dayFilter', 'vm.teams'], function (newValue, oldValue) {
-            angular.element($document[0]).ready(function () {
-                drawEvents();
-            });
+        $scope.$watch('vm.dayFilter', function (newValue, oldValue) {
+            redrawEvents();
+        }, true);
+
+        $scope.$watch('vm.teams', function (newValue, oldValue) {
+            redrawEvents();
         }, true);
 
         $scope.$watch('vm.events', function (newValue, oldValue) {
             events = uiShifterEvent.sortEvents(vm.events);
+            redrawEvents();
+        }, true);
+
+        // wait till table will be rendered and draw all events
+        var redrawEvents = function () {
             angular.element($document[0]).ready(function () {
                 drawEvents();
             });
-        }, true);
+        };
 
         /**
          * INIT
          */
-        angular.element($document[0]).ready(function () {
-            drawEvents();
-        });
+        redrawEvents();
 
         // handle resize event
         angular.element($window).bind('resize', function () {

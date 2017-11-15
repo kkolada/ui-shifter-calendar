@@ -135,6 +135,15 @@ shifterCalendarShowcaseApp.controller('ShowcaseCtrl', function($scope) {
             team: 'TeamB'
         },
         {
+            day: 'Monday',
+            from: '05:30',
+            to: '06:00',
+            fraction: '1/1',
+            position: 0,
+            type: 'shift',
+            team: 'TeamA'
+        },
+        {
             day: 'Tuesday',
             from: '10:00',
             to: '11:45',
@@ -308,6 +317,17 @@ shifterCalendarShowcaseApp.controller('ShowcaseCtrl', function($scope) {
             team: $scope.teamName
         });
     };
+
+    $scope.addNewTeam = function() {
+        $scope.teams.push($scope.newTeamName);
+    };
+
+    $scope.deleteTeam = function(team) {
+        var index = $scope.teams.indexOf(team);
+        if (index > -1) {
+            $scope.teams.splice(index, 1);
+        }
+    }
 
 });
 /* EOF */

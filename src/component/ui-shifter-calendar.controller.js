@@ -39,30 +39,33 @@
 
         $scope.$watch('vm.timeFilter', function (newValue, oldValue) {
             countRows(newValue.start, newValue.end);
-            angular.element($document[0]).ready(function () {
-                drawEvents();
-            });
+            redrawEvents();
         }, true);
 
-        $scope.$watchGroup(['vm.dayFilter', 'vm.teams'], function (newValue, oldValue) {
-            angular.element($document[0]).ready(function () {
-                drawEvents();
-            });
+        $scope.$watch('vm.dayFilter', function (newValue, oldValue) {
+            redrawEvents();
+        }, true);
+
+        $scope.$watch('vm.teams', function (newValue, oldValue) {
+            redrawEvents();
         }, true);
 
         $scope.$watch('vm.events', function (newValue, oldValue) {
             events = uiShifterEvent.sortEvents(vm.events);
+            redrawEvents();
+        }, true);
+
+        // wait till table will be rendered and draw all events
+        var redrawEvents = function () {
             angular.element($document[0]).ready(function () {
                 drawEvents();
             });
-        }, true);
+        };
 
         /**
          * INIT
          */
-        angular.element($document[0]).ready(function () {
-            drawEvents();
-        });
+        redrawEvents();
 
         // handle resize event
         angular.element($window).bind('resize', function () {

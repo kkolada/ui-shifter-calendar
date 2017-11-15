@@ -86,9 +86,9 @@
         <button ng-click="addNewEvent()">Add event</button>
         <hr style="border: none; margin-bottom: 30px;">
         <div style="width: 90%; margin: auto;">
-            <ui-shifter-calendar id="randomUUID" shadow="true"
+            <ui-shifter-calendar id="testUUID" shadow="true"
                                  time-filter="{start: data.startTime.t, end: data.endTime.t}"
-                                 day-filter="checkboxModel" events="events"></ui-shifter-calendar>
+                                 day-filter="checkboxModel" events="events" teams="teams"></ui-shifter-calendar>
         </div>
         <!-- also possible to use as attribute <div ui-shifter-calendar ... ></div>-->
     </div>

@@ -11,8 +11,7 @@
   .ui-shifter-calendar table.ui-shifter-calendar-week-wrapper thead > tr > th {
     padding: 4px 30px;
     border: 1px solid #cfcfcf;
-    font-weight: normal;
-    min-width: 80px; }
+    font-weight: normal; }
     .ui-shifter-calendar table.ui-shifter-calendar-week-wrapper thead > tr > th:first-child {
       padding: 4px 0;
       border-top: none;
@@ -54,7 +53,6 @@
     border: 1px solid #cfcfcf;
     font-weight: normal;
     font-size: small;
-    min-width: 80px;
     vertical-align: top;
     height: 15px; }
     .ui-shifter-calendar table.ui-shifter-calendar-week-wrapper tbody > tr > td:first-child {

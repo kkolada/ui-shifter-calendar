@@ -49,6 +49,9 @@ shifterCalendarShowcaseApp.controller('ShowcaseCtrl', function($scope) {
         $scope.checkboxModel.sat = true;
         $scope.checkboxModel.sun = true;
     };
+    $scope.teams = [
+        'TeamA', 'TeamB'
+    ];
     $scope.events = [
         {
             day: 'Monday',
@@ -56,7 +59,17 @@ shifterCalendarShowcaseApp.controller('ShowcaseCtrl', function($scope) {
             to: '05:00',
             fraction: '2/4',
             position: 0,
-            type: 'shift'
+            type: 'shift',
+            team: 'TeamA'
+        },
+        {
+            day: 'Monday',
+            from: '03:00',
+            to: '05:00',
+            fraction: '2/4',
+            position: 0,
+            type: 'shift',
+            team: 'TeamB'
         },
         {
             day: 'Tuesday',
@@ -64,7 +77,8 @@ shifterCalendarShowcaseApp.controller('ShowcaseCtrl', function($scope) {
             to: '11:45',
             fraction: '1/2',
             position: 0,
-            type: 'booking'
+            type: 'booking',
+            team: 'TeamA'
         },
         {
             day: 'Tuesday',
@@ -72,7 +86,8 @@ shifterCalendarShowcaseApp.controller('ShowcaseCtrl', function($scope) {
             to: '10:45',
             fraction: '3/4',
             position: 1,
-            type: 'booking'
+            type: 'booking',
+            team: 'TeamA'
         },
         {
             day: 'Monday',
@@ -80,7 +95,8 @@ shifterCalendarShowcaseApp.controller('ShowcaseCtrl', function($scope) {
             to: '07:45',
             fraction: '1/4',
             position: 1,
-            type: 'booking'
+            type: 'booking',
+            team: 'TeamA'
         },
         {
             day: 'Wednesday',
@@ -88,7 +104,8 @@ shifterCalendarShowcaseApp.controller('ShowcaseCtrl', function($scope) {
             to: '07:28',
             fraction: '5/8',
             position: 0,
-            type: 'booking'
+            type: 'booking',
+            team: 'TeamA'
         },
         {
             day: 'Monday',
@@ -96,7 +113,8 @@ shifterCalendarShowcaseApp.controller('ShowcaseCtrl', function($scope) {
             to: '06:30',
             fraction: '1/4',
             position: 3,
-            type: 'booking'
+            type: 'booking',
+            team: 'TeamA'
         },
         {
             day: 'Friday',
@@ -104,7 +122,8 @@ shifterCalendarShowcaseApp.controller('ShowcaseCtrl', function($scope) {
             to: '03:15',
             fraction: '7/8',
             position: 0,
-            type: 'booking'
+            type: 'booking',
+            team: 'TeamA'
         },
         {
             day: 'Monday',
@@ -112,7 +131,8 @@ shifterCalendarShowcaseApp.controller('ShowcaseCtrl', function($scope) {
             to: '7:00',
             fraction: '1/4',
             position: 2,
-            type: 'booking'
+            type: 'booking',
+            team: 'TeamA'
         },
         {
             day: 'Sunday',
@@ -120,7 +140,8 @@ shifterCalendarShowcaseApp.controller('ShowcaseCtrl', function($scope) {
             to: '11:45',
             fraction: '2/8',
             position: 0,
-            type: 'booking'
+            type: 'booking',
+            team: 'TeamA'
         },
         {
             day: 'Monday',
@@ -128,7 +149,8 @@ shifterCalendarShowcaseApp.controller('ShowcaseCtrl', function($scope) {
             to: '09:00',
             fraction: '1/4',
             position: 0,
-            type: 'booking'
+            type: 'booking',
+            team: 'TeamA'
         },
         {
             day: 'Thursday',
@@ -136,7 +158,8 @@ shifterCalendarShowcaseApp.controller('ShowcaseCtrl', function($scope) {
             to: '07:15',
             fraction: '3/8',
             position: 0,
-            type: 'booking'
+            type: 'booking',
+            team: 'TeamA'
         },
         {
             day: 'Monday',
@@ -144,7 +167,8 @@ shifterCalendarShowcaseApp.controller('ShowcaseCtrl', function($scope) {
             to: '10:00',
             fraction: '3/4',
             position: 1,
-            type: 'booking'
+            type: 'booking',
+            team: 'TeamA'
         },
         {
             day: 'Monday',
@@ -152,7 +176,8 @@ shifterCalendarShowcaseApp.controller('ShowcaseCtrl', function($scope) {
             to: '03:00',
             fraction: '2/3',
             position: 0,
-            type: 'booking'
+            type: 'booking',
+            team: 'TeamA'
         },
         {
             day: 'Monday',
@@ -160,7 +185,8 @@ shifterCalendarShowcaseApp.controller('ShowcaseCtrl', function($scope) {
             to: '11:00',
             fraction: '1/4',
             position: 0,
-            type: 'booking'
+            type: 'booking',
+            team: 'TeamA'
         },
         {
             day: 'Saturday',
@@ -168,7 +194,8 @@ shifterCalendarShowcaseApp.controller('ShowcaseCtrl', function($scope) {
             to: '04:00',
             fraction: '1/3',
             position: 0,
-            type: 'booking'
+            type: 'booking',
+            team: 'TeamA'
         },
         {
             day: 'Saturday',
@@ -176,7 +203,8 @@ shifterCalendarShowcaseApp.controller('ShowcaseCtrl', function($scope) {
             to: '06:00',
             fraction: '1/3',
             position: 0,
-            type: 'booking'
+            type: 'booking',
+            team: 'TeamA'
         },
         {
             day: 'Saturday',
@@ -184,7 +212,8 @@ shifterCalendarShowcaseApp.controller('ShowcaseCtrl', function($scope) {
             to: '05:00',
             fraction: '1/4',
             position: 0,
-            type: 'booking'
+            type: 'booking',
+            team: 'TeamA'
         },
         {
             day: 'Saturday',
@@ -192,7 +221,8 @@ shifterCalendarShowcaseApp.controller('ShowcaseCtrl', function($scope) {
             to: '06:00',
             fraction: '2/3',
             position: 1,
-            type: 'booking'
+            type: 'booking',
+            team: 'TeamA'
         }
     ];
     $scope.addNewEvent = function() {

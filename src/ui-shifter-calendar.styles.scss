@@ -1,5 +1,4 @@
 $border-color-grey: #cfcfcf;
-$column-min-width: 80px;
 $first-column-min-width: 30px;
 $event-border-radius: 4px;
 
@@ -23,7 +22,6 @@ $event-border-radius: 4px;
         padding: 4px 30px;
         border: 1px solid $border-color-grey;
         font-weight: normal;
-        min-width: $column-min-width;
 
         &:first-child {
           padding: 4px 0;
@@ -81,7 +79,6 @@ $event-border-radius: 4px;
         border: 1px solid $border-color-grey;
         font-weight: normal;
         font-size: small;
-        min-width: $column-min-width;
         vertical-align: top;
         height: 15px;
 

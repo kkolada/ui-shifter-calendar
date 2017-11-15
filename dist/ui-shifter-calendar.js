@@ -13,7 +13,7 @@ angular.module('UI.Shifter.Calendar', ['src/templates/ui-shifter-calendar.tpl.ht
 angular.module('src/templates/ui-shifter-calendar.tpl.html', []).run(['$templateCache', function($templateCache) {
   'use strict';
   $templateCache.put('src/templates/ui-shifter-calendar.tpl.html',
-    '<div class=ui-shifter-calendar><table id="{{vm.id + \'-Table\'}}" ng-class="[\'ui-shifter-calendar-week-wrapper\', {shadow: vm.shadow}]"><thead><tr><th></th><th ng-if=vm.dayFilter.mon>Monday</th><th ng-if=vm.dayFilter.tue>Tuesday</th><th ng-if=vm.dayFilter.wed>Wednesday</th><th ng-if=vm.dayFilter.thu>Thursday</th><th ng-if=vm.dayFilter.fri>Friday</th><th ng-if=vm.dayFilter.sat>Saturday</th><th ng-if=vm.dayFilter.sun>Sunday</th></tr><tr class=subhead><th></th><th ng-if=vm.dayFilter.mon>Team</th><th ng-if=vm.dayFilter.tue>Team</th><th ng-if=vm.dayFilter.wed>Team</th><th ng-if=vm.dayFilter.thu>Team</th><th ng-if=vm.dayFilter.fri>Team</th><th ng-if=vm.dayFilter.sat>Team</th><th ng-if=vm.dayFilter.sun>Team</th></tr></thead><tbody><tr class=first-half-hour ng-repeat-start="hour in vm.hours track by $index"><td id="{{vm.id + \'-\' + hour.time}}">{{hour.time}}</td><td id="{{vm.id + \'-\' + hour.time + \'-Monday\'}}" ng-if=vm.dayFilter.mon></td><td id="{{vm.id + \'-\' + hour.time + \'-Tuesday\'}}" ng-if=vm.dayFilter.tue></td><td id="{{vm.id + \'-\' + hour.time + \'-Wednesday\'}}" ng-if=vm.dayFilter.wed></td><td id="{{vm.id + \'-\' + hour.time + \'-Thursday\'}}" ng-if=vm.dayFilter.thu></td><td id="{{vm.id + \'-\' + hour.time + \'-Friday\'}}" ng-if=vm.dayFilter.fri></td><td id="{{vm.id + \'-\' + hour.time + \'-Saturday\'}}" ng-if=vm.dayFilter.sat></td><td id="{{vm.id + \'-\' + hour.time + \'-Sunday\'}}" ng-if=vm.dayFilter.sun></td></tr><tr class=second-half-hour ng-repeat-end><td>&nbsp;</td><td ng-if=vm.dayFilter.mon></td><td ng-if=vm.dayFilter.tue></td><td ng-if=vm.dayFilter.wed></td><td ng-if=vm.dayFilter.thu></td><td ng-if=vm.dayFilter.fri></td><td ng-if=vm.dayFilter.sat></td><td ng-if=vm.dayFilter.sun></td></tr></tbody></table></div>');
+    '<div class=ui-shifter-calendar><table id="{{vm.id + \'-Table\'}}" ng-class="[\'ui-shifter-calendar-week-wrapper\', {shadow: vm.shadow}]"><thead><tr><th></th><th ng-if=vm.dayFilter.mon colspan={{vm.teams.length}}>Monday</th><th ng-if=vm.dayFilter.tue colspan={{vm.teams.length}}>Tuesday</th><th ng-if=vm.dayFilter.wed colspan={{vm.teams.length}}>Wednesday</th><th ng-if=vm.dayFilter.thu colspan={{vm.teams.length}}>Thursday</th><th ng-if=vm.dayFilter.fri colspan={{vm.teams.length}}>Friday</th><th ng-if=vm.dayFilter.sat colspan={{vm.teams.length}}>Saturday</th><th ng-if=vm.dayFilter.sun colspan={{vm.teams.length}}>Sunday</th></tr><tr class=subhead><th></th><th ng-if=vm.dayFilter.mon ng-repeat="team in vm.teams">{{team}}</th><th ng-if=vm.dayFilter.tue ng-repeat="team in vm.teams">{{team}}</th><th ng-if=vm.dayFilter.wed ng-repeat="team in vm.teams">{{team}}</th><th ng-if=vm.dayFilter.thu ng-repeat="team in vm.teams">{{team}}</th><th ng-if=vm.dayFilter.fri ng-repeat="team in vm.teams">{{team}}</th><th ng-if=vm.dayFilter.sat ng-repeat="team in vm.teams">{{team}}</th><th ng-if=vm.dayFilter.sun ng-repeat="team in vm.teams">{{team}}</th></tr></thead><tbody><tr class=first-half-hour ng-repeat-start="hour in vm.hours track by $index"><td id="{{vm.id + \'-\' + hour.time}}">{{hour.time}}</td><td id="{{vm.id + \'-\' + hour.time + \'-Monday-\' + team}}" ng-if=vm.dayFilter.mon ng-repeat="team in vm.teams"></td><td id="{{vm.id + \'-\' + hour.time + \'-Tuesday-\' + team}}" ng-if=vm.dayFilter.tue ng-repeat="team in vm.teams"></td><td id="{{vm.id + \'-\' + hour.time + \'-Wednesday-\' + team}}" ng-if=vm.dayFilter.wed ng-repeat="team in vm.teams"></td><td id="{{vm.id + \'-\' + hour.time + \'-Thursday-\' + team}}" ng-if=vm.dayFilter.thu ng-repeat="team in vm.teams"></td><td id="{{vm.id + \'-\' + hour.time + \'-Friday-\' + team}}" ng-if=vm.dayFilter.fri ng-repeat="team in vm.teams"></td><td id="{{vm.id + \'-\' + hour.time + \'-Saturday-\' + team}}" ng-if=vm.dayFilter.sat ng-repeat="team in vm.teams"></td><td id="{{vm.id + \'-\' + hour.time + \'-Sunday-\' + team}}" ng-if=vm.dayFilter.sun ng-repeat="team in vm.teams"></td></tr><tr class=second-half-hour ng-repeat-end><td>&nbsp;</td><td ng-if=vm.dayFilter.mon ng-repeat="team in vm.teams"></td><td ng-if=vm.dayFilter.tue ng-repeat="team in vm.teams"></td><td ng-if=vm.dayFilter.wed ng-repeat="team in vm.teams"></td><td ng-if=vm.dayFilter.thu ng-repeat="team in vm.teams"></td><td ng-if=vm.dayFilter.fri ng-repeat="team in vm.teams"></td><td ng-if=vm.dayFilter.sat ng-repeat="team in vm.teams"></td><td ng-if=vm.dayFilter.sun ng-repeat="team in vm.teams"></td></tr></tbody></table></div>');
 }]);
 
 (function() {
@@ -36,8 +36,8 @@ angular.module('src/templates/ui-shifter-calendar.tpl.html', []).run(['$template
          * @param timeFilterStart
          */
         uiShiftCalendarEvent.createBooking = function (componentId, element, timeFilterStart) {
-            var targetId = componentId + '-' + element.from.substring(0, 2) +':00-' + element.day,
-                coordinates = getColumnCoordinates(componentId, element.day, element.from),
+            var targetId = componentId + '-' + element.from.substring(0, 2) +':00-' + element.day + '-' + element.team,
+                coordinates = getColumnCoordinates(componentId, element.day, element.team, element.from),
                 newBooking = angular.element(
                 '<div class="' + eventConst.BOOKING + '"><span>' + element.fraction + '<br>' +
                 element.from + ' - ' + element.to + '</span></div>'
@@ -90,7 +90,7 @@ angular.module('src/templates/ui-shifter-calendar.tpl.html', []).run(['$template
                     newBooking[0].style.left = left + 'px';
 
                     var newTarget = $document[0].getElementById(
-                        componentId + '-' + timeFilterStart + '-' + element.day
+                        componentId + '-' + timeFilterStart + '-' + element.day + '-' + element.team
                     );
                     angular.element(newTarget).append(newBooking);
                     newBooking.addClass('cutTop');
@@ -142,7 +142,7 @@ angular.module('src/templates/ui-shifter-calendar.tpl.html', []).run(['$template
          * id-09:00-Monday table cell. In order to present offset on screen calculate relative space from 9:00 to 9:20
          * as table row height.
          *
-         * Returns top offset from table cell (rounded and shrunk byc2), when there is time difference between given
+         * Returns top offset from table cell (rounded and shrunk), when there is time difference between given
          * time and full hour.
          *
          * @param timeFrom
@@ -246,8 +246,9 @@ angular.module('src/templates/ui-shifter-calendar.tpl.html', []).run(['$template
          * @param hour
          * @returns {{left: number, top: number, width: number, height: number}}
          */
-        function getColumnCoordinates(id, day, hour) {
-            var col = $document[0].getElementById(id + '-' + hour.substring(0, 2) + ':00' + '-' + day);
+        function getColumnCoordinates(id, day, team, hour) {
+            var col = $document[0].getElementById(id + '-' + hour.substring(0, 2) + ':00' + '-' + day + '-' + team);
+
             if (col !== null) {
                 var boundingRectCol = col.getBoundingClientRect();
                 var topCol = Math.round(boundingRectCol.top);
@@ -316,7 +317,7 @@ angular.module('src/templates/ui-shifter-calendar.tpl.html', []).run(['$template
                 newCoordinates = null;
             if (calculateMinuteDiff(timeFilterStart, event.from) < 0 &&
                 calculateMinuteDiff(timeFilterStart, event.to) > 0) {
-                newCoordinates = getColumnCoordinates(componentId, event.day, timeFilterStart);
+                newCoordinates = getColumnCoordinates(componentId, event.day, event.team, timeFilterStart);
                 recalculatedHeight = calculateHeight(
                     calculateMinuteDiff(timeFilterStart, event.to),
                     newCoordinates.height
@@ -356,9 +357,10 @@ angular.module('src/templates/ui-shifter-calendar.tpl.html', []).run(['$template
     angular
         .module('UI.Shifter.Calendar')
         .controller('uiShifterCalendarCtrl', ['$scope', '$document', '$moment', 'eventConst', 'uiShifterEvent',
-            'uiShifterCalendarEvent', uiShifterCalendarCtrl]);
+            'uiShifterCalendarEvent', '$window', uiShifterCalendarCtrl]);
 
-    function uiShifterCalendarCtrl($scope, $document, $moment, eventConst, uiShifterEvent, uiShifterCalendarEvent) {
+    function uiShifterCalendarCtrl($scope, $document, $moment, eventConst, uiShifterEvent, uiShifterCalendarEvent,
+                                   $window) {
         var vm = this,
             events = [];
         vm.hours = [];
@@ -395,7 +397,7 @@ angular.module('src/templates/ui-shifter-calendar.tpl.html', []).run(['$template
             });
         }, true);
 
-        $scope.$watch('vm.dayFilter', function (newValue, oldValue) {
+        $scope.$watchGroup(['vm.dayFilter', 'vm.teams'], function (newValue, oldValue) {
             angular.element($document[0]).ready(function () {
                 drawEvents();
             });
@@ -415,6 +417,11 @@ angular.module('src/templates/ui-shifter-calendar.tpl.html', []).run(['$template
             drawEvents();
         });
 
+        // handle resize event
+        angular.element($window).bind('resize', function () {
+            drawEvents();
+        });
+
     }
 
 })();
@@ -427,10 +434,6 @@ angular.module('src/templates/ui-shifter-calendar.tpl.html', []).run(['$template
         .module('UI.Shifter.Calendar')
         .directive('uiShifterCalendar', uiShiftCalendarDirective);
 
-    function link ($scope) {
-
-    }
-
     function uiShiftCalendarDirective() {
         return {
             restrict: 'AE',
@@ -440,12 +443,12 @@ angular.module('src/templates/ui-shifter-calendar.tpl.html', []).run(['$template
             scope: {
                 id: '@',
                 events: '=',
+                teams: '=',
                 timeFilter: '=',
                 dayFilter: '=',
                 shadow: '='
             },
-            bindToController: true,
-            link: link
+            bindToController: true
         };
     }
 

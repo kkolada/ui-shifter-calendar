@@ -4,9 +4,10 @@
     angular
         .module('UI.Shifter.Calendar')
         .controller('uiShifterCalendarCtrl', ['$scope', '$document', '$moment', 'eventConst', 'uiShifterEvent',
-            'uiShifterCalendarEvent', uiShifterCalendarCtrl]);
+            'uiShifterCalendarEvent', '$window', uiShifterCalendarCtrl]);
 
-    function uiShifterCalendarCtrl($scope, $document, $moment, eventConst, uiShifterEvent, uiShifterCalendarEvent) {
+    function uiShifterCalendarCtrl($scope, $document, $moment, eventConst, uiShifterEvent, uiShifterCalendarEvent,
+                                   $window) {
         var vm = this,
             events = [];
         vm.hours = [];
@@ -43,7 +44,7 @@
             });
         }, true);
 
-        $scope.$watch('vm.dayFilter', function (newValue, oldValue) {
+        $scope.$watchGroup(['vm.dayFilter', 'vm.teams'], function (newValue, oldValue) {
             angular.element($document[0]).ready(function () {
                 drawEvents();
             });
@@ -60,6 +61,11 @@
          * INIT
          */
         angular.element($document[0]).ready(function () {
+            drawEvents();
+        });
+
+        // handle resize event
+        angular.element($window).bind('resize', function () {
             drawEvents();
         });
 

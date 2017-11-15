@@ -18,11 +18,12 @@
          * @param timeFilterStart
          */
         uiShiftCalendarEvent.createBooking = function (componentId, element, timeFilterStart) {
-            var targetId = componentId + '-' + element.from.substring(0, 2) +':00-' + element.day,
-                coordinates = getColumnCoordinates(componentId, element.day, element.from),
+            var targetId = componentId + '-' + element.from.substring(0, 2) +':00-' + element.day + '-' + element.team,
+                coordinates = getColumnCoordinates(componentId, element.day, element.team, element.from),
+                eventClass = getEventClass(element.type),
                 newBooking = angular.element(
-                '<div class="' + eventConst.BOOKING + '"><span>' + element.fraction + '<br>' +
-                element.from + ' - ' + element.to + '</span></div>'
+                '<div class="event ' + eventClass + '"><div>' + element.fraction + '<br>' +
+                element.from + ' - ' + element.to + '</div></div>'
             );
 
             // set event's width and height
@@ -72,7 +73,7 @@
                     newBooking[0].style.left = left + 'px';
 
                     var newTarget = $document[0].getElementById(
-                        componentId + '-' + timeFilterStart + '-' + element.day
+                        componentId + '-' + timeFilterStart + '-' + element.day + '-' + element.team
                     );
                     angular.element(newTarget).append(newBooking);
                     newBooking.addClass('cutTop');
@@ -124,7 +125,7 @@
          * id-09:00-Monday table cell. In order to present offset on screen calculate relative space from 9:00 to 9:20
          * as table row height.
          *
-         * Returns top offset from table cell (rounded and shrunk byc2), when there is time difference between given
+         * Returns top offset from table cell (rounded and shrunk), when there is time difference between given
          * time and full hour.
          *
          * @param timeFrom
@@ -228,8 +229,9 @@
          * @param hour
          * @returns {{left: number, top: number, width: number, height: number}}
          */
-        function getColumnCoordinates(id, day, hour) {
-            var col = $document[0].getElementById(id + '-' + hour.substring(0, 2) + ':00' + '-' + day);
+        function getColumnCoordinates(id, day, team, hour) {
+            var col = $document[0].getElementById(id + '-' + hour.substring(0, 2) + ':00' + '-' + day + '-' + team);
+
             if (col !== null) {
                 var boundingRectCol = col.getBoundingClientRect();
                 var topCol = Math.round(boundingRectCol.top);
@@ -298,7 +300,7 @@
                 newCoordinates = null;
             if (calculateMinuteDiff(timeFilterStart, event.from) < 0 &&
                 calculateMinuteDiff(timeFilterStart, event.to) > 0) {
-                newCoordinates = getColumnCoordinates(componentId, event.day, timeFilterStart);
+                newCoordinates = getColumnCoordinates(componentId, event.day, event.team, timeFilterStart);
                 recalculatedHeight = calculateHeight(
                     calculateMinuteDiff(timeFilterStart, event.to),
                     newCoordinates.height
@@ -311,6 +313,25 @@
                 height: recalculatedHeight,
                 width: recalculatedWidth
             };
+        }
+
+        function getEventClass(type) {
+            var eventClass = '';
+            switch(type) {
+                case eventConst.OPEN_HOUR:
+                    eventClass = 'oh';
+                    break;
+                case eventConst.BOOKING:
+                    eventClass = 'booking';
+                    break;
+                case eventConst.SHIFT:
+                    eventClass = 'shift';
+                    break;
+                default:
+                    break;
+            }
+
+            return eventClass;
         }
 
         // public factory methods

@@ -1,5 +1,4 @@
 $border-color-grey: #cfcfcf;
-$column-min-width: 80px;
 $first-column-min-width: 30px;
 $event-border-radius: 4px;
 
@@ -23,7 +22,6 @@ $event-border-radius: 4px;
         padding: 4px 30px;
         border: 1px solid $border-color-grey;
         font-weight: normal;
-        min-width: $column-min-width;
 
         &:first-child {
           padding: 4px 0;
@@ -43,24 +41,19 @@ $event-border-radius: 4px;
     }
 
     & tbody > tr {
-      & .booking {
-        &:hover {
-          background: #c80000;
-        }
+      & .event {
         cursor: pointer;
         position: absolute;
         width: 70px;
         height: 60px;
         display: block;
-        background: #ff0000;
         border-radius: $event-border-radius;
-        border: 1px solid #c80000;
-        opacity: .8;
+        opacity: .9;
         transition: background .3s ease .0s;
-        & span {
+        overflow: hidden;
+        & div {
           font-size: x-small;
-          padding-left: 5px;
-          color: #fff;
+          color: #000;
         }
         &.cutTop {
           border-radius: 0 0 $event-border-radius $event-border-radius;
@@ -75,13 +68,40 @@ $event-border-radius: 4px;
           border-top: none;
           border-bottom: none;
         }
+
+        &.oh {
+          &:hover {
+            background: #cbcbcb;
+            border: 1px solid #a8a8a8;
+          }
+          background: #eeeeee;
+          border: 1px solid #cbcbcb;
+        }
+        &.booking {
+          &:hover {
+            background: #5cc161;
+            border: 1px solid #4f9e4f;
+          }
+          background: #63e468;
+          border: 1px solid #5cc161;
+        }
+        &.shift {
+          &:hover {
+            background: #326934;
+            border: 1px solid #214621;
+          }
+          background: #3d8c40;
+          border: 1px solid #326934;
+          & div {
+            color: #fff;
+          }
+        }
       }
 
       & > td {
         border: 1px solid $border-color-grey;
         font-weight: normal;
         font-size: small;
-        min-width: $column-min-width;
         vertical-align: top;
         height: 15px;
 

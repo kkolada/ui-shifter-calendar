@@ -7,12 +7,13 @@
         .module('UI.Shifter.Calendar', []);
 
 })();
+
 angular.module('UI.Shifter.Calendar', ['src/templates/ui-shifter-calendar.tpl.html']);
 
 angular.module('src/templates/ui-shifter-calendar.tpl.html', []).run(['$templateCache', function($templateCache) {
   'use strict';
   $templateCache.put('src/templates/ui-shifter-calendar.tpl.html',
-    '<div class=ui-shifter-calendar><table id="{{vm.id + \'-Table\'}}" ng-class="[\'ui-shifter-calendar-week-wrapper\', {shadow: vm.shadow}]"><thead><tr><th></th><th ng-if=vm.dayFilter.mon>Monday</th><th ng-if=vm.dayFilter.tue>Tuesday</th><th ng-if=vm.dayFilter.wed>Wednesday</th><th ng-if=vm.dayFilter.thu>Thursday</th><th ng-if=vm.dayFilter.fri>Friday</th><th ng-if=vm.dayFilter.sat>Saturday</th><th ng-if=vm.dayFilter.sun>Sunday</th></tr><tr class=subhead><th></th><th ng-if=vm.dayFilter.mon>Team</th><th ng-if=vm.dayFilter.tue>Team</th><th ng-if=vm.dayFilter.wed>Team</th><th ng-if=vm.dayFilter.thu>Team</th><th ng-if=vm.dayFilter.fri>Team</th><th ng-if=vm.dayFilter.sat>Team</th><th ng-if=vm.dayFilter.sun>Team</th></tr></thead><tbody><tr class=first-half-hour ng-repeat-start="hour in vm.hours track by $index"><td id="{{vm.id + \'-\' + hour.time}}">{{hour.time}}</td><td id="{{vm.id + \'-\' + hour.time + \'-Monday\'}}" ng-if=vm.dayFilter.mon></td><td id="{{vm.id + \'-\' + hour.time + \'-Tuesday\'}}" ng-if=vm.dayFilter.tue></td><td id="{{vm.id + \'-\' + hour.time + \'-Wednesday\'}}" ng-if=vm.dayFilter.wed></td><td id="{{vm.id + \'-\' + hour.time + \'-Thursday\'}}" ng-if=vm.dayFilter.thu></td><td id="{{vm.id + \'-\' + hour.time + \'-Friday\'}}" ng-if=vm.dayFilter.fri></td><td id="{{vm.id + \'-\' + hour.time + \'-Saturday\'}}" ng-if=vm.dayFilter.sat></td><td id="{{vm.id + \'-\' + hour.time + \'-Sunday\'}}" ng-if=vm.dayFilter.sun></td></tr><tr class=second-half-hour ng-repeat-end><td>&nbsp;</td><td ng-if=vm.dayFilter.mon></td><td ng-if=vm.dayFilter.tue></td><td ng-if=vm.dayFilter.wed></td><td ng-if=vm.dayFilter.thu></td><td ng-if=vm.dayFilter.fri></td><td ng-if=vm.dayFilter.sat></td><td ng-if=vm.dayFilter.sun></td></tr></tbody></table></div>');
+    '<div class=ui-shifter-calendar><table id="{{vm.id + \'-Table\'}}" ng-class="[\'ui-shifter-calendar-week-wrapper\', {shadow: vm.shadow}]"><thead><tr><th></th><th ng-if=vm.dayFilter.mon colspan={{vm.teams.length}}>Monday</th><th ng-if=vm.dayFilter.tue colspan={{vm.teams.length}}>Tuesday</th><th ng-if=vm.dayFilter.wed colspan={{vm.teams.length}}>Wednesday</th><th ng-if=vm.dayFilter.thu colspan={{vm.teams.length}}>Thursday</th><th ng-if=vm.dayFilter.fri colspan={{vm.teams.length}}>Friday</th><th ng-if=vm.dayFilter.sat colspan={{vm.teams.length}}>Saturday</th><th ng-if=vm.dayFilter.sun colspan={{vm.teams.length}}>Sunday</th></tr><tr class=subhead><th></th><th ng-if=vm.dayFilter.mon ng-repeat="team in vm.teams">{{team}}</th><th ng-if=vm.dayFilter.tue ng-repeat="team in vm.teams">{{team}}</th><th ng-if=vm.dayFilter.wed ng-repeat="team in vm.teams">{{team}}</th><th ng-if=vm.dayFilter.thu ng-repeat="team in vm.teams">{{team}}</th><th ng-if=vm.dayFilter.fri ng-repeat="team in vm.teams">{{team}}</th><th ng-if=vm.dayFilter.sat ng-repeat="team in vm.teams">{{team}}</th><th ng-if=vm.dayFilter.sun ng-repeat="team in vm.teams">{{team}}</th></tr></thead><tbody><tr class=first-half-hour ng-repeat-start="hour in vm.hours track by $index"><td id="{{vm.id + \'-\' + hour.time}}">{{hour.time}}</td><td id="{{vm.id + \'-\' + hour.time + \'-Monday-\' + team}}" ng-if=vm.dayFilter.mon ng-repeat="team in vm.teams"></td><td id="{{vm.id + \'-\' + hour.time + \'-Tuesday-\' + team}}" ng-if=vm.dayFilter.tue ng-repeat="team in vm.teams"></td><td id="{{vm.id + \'-\' + hour.time + \'-Wednesday-\' + team}}" ng-if=vm.dayFilter.wed ng-repeat="team in vm.teams"></td><td id="{{vm.id + \'-\' + hour.time + \'-Thursday-\' + team}}" ng-if=vm.dayFilter.thu ng-repeat="team in vm.teams"></td><td id="{{vm.id + \'-\' + hour.time + \'-Friday-\' + team}}" ng-if=vm.dayFilter.fri ng-repeat="team in vm.teams"></td><td id="{{vm.id + \'-\' + hour.time + \'-Saturday-\' + team}}" ng-if=vm.dayFilter.sat ng-repeat="team in vm.teams"></td><td id="{{vm.id + \'-\' + hour.time + \'-Sunday-\' + team}}" ng-if=vm.dayFilter.sun ng-repeat="team in vm.teams"></td></tr><tr class=second-half-hour ng-repeat-end><td>&nbsp;</td><td ng-if=vm.dayFilter.mon ng-repeat="team in vm.teams"></td><td ng-if=vm.dayFilter.tue ng-repeat="team in vm.teams"></td><td ng-if=vm.dayFilter.wed ng-repeat="team in vm.teams"></td><td ng-if=vm.dayFilter.thu ng-repeat="team in vm.teams"></td><td ng-if=vm.dayFilter.fri ng-repeat="team in vm.teams"></td><td ng-if=vm.dayFilter.sat ng-repeat="team in vm.teams"></td><td ng-if=vm.dayFilter.sun ng-repeat="team in vm.teams"></td></tr></tbody></table></div>');
 }]);
 
 (function() {
@@ -35,11 +36,12 @@ angular.module('src/templates/ui-shifter-calendar.tpl.html', []).run(['$template
          * @param timeFilterStart
          */
         uiShiftCalendarEvent.createBooking = function (componentId, element, timeFilterStart) {
-            var targetId = componentId + '-' + element.from.substring(0, 2) +':00-' + element.day,
-                coordinates = getColumnCoordinates(componentId, element.day, element.from),
+            var targetId = componentId + '-' + element.from.substring(0, 2) +':00-' + element.day + '-' + element.team,
+                coordinates = getColumnCoordinates(componentId, element.day, element.team, element.from),
+                eventClass = getEventClass(element.type),
                 newBooking = angular.element(
-                '<div class="' + eventConst.BOOKING + '"><span>' + element.fraction + '<br>' +
-                element.from + ' - ' + element.to + '</span></div>'
+                '<div class="event ' + eventClass + '"><div>' + element.fraction + '<br>' +
+                element.from + ' - ' + element.to + '</div></div>'
             );
 
             // set event's width and height
@@ -89,7 +91,7 @@ angular.module('src/templates/ui-shifter-calendar.tpl.html', []).run(['$template
                     newBooking[0].style.left = left + 'px';
 
                     var newTarget = $document[0].getElementById(
-                        componentId + '-' + timeFilterStart + '-' + element.day
+                        componentId + '-' + timeFilterStart + '-' + element.day + '-' + element.team
                     );
                     angular.element(newTarget).append(newBooking);
                     newBooking.addClass('cutTop');
@@ -141,7 +143,7 @@ angular.module('src/templates/ui-shifter-calendar.tpl.html', []).run(['$template
          * id-09:00-Monday table cell. In order to present offset on screen calculate relative space from 9:00 to 9:20
          * as table row height.
          *
-         * Returns top offset from table cell (rounded and shrunk byc2), when there is time difference between given
+         * Returns top offset from table cell (rounded and shrunk), when there is time difference between given
          * time and full hour.
          *
          * @param timeFrom
@@ -245,8 +247,9 @@ angular.module('src/templates/ui-shifter-calendar.tpl.html', []).run(['$template
          * @param hour
          * @returns {{left: number, top: number, width: number, height: number}}
          */
-        function getColumnCoordinates(id, day, hour) {
-            var col = $document[0].getElementById(id + '-' + hour.substring(0, 2) + ':00' + '-' + day);
+        function getColumnCoordinates(id, day, team, hour) {
+            var col = $document[0].getElementById(id + '-' + hour.substring(0, 2) + ':00' + '-' + day + '-' + team);
+
             if (col !== null) {
                 var boundingRectCol = col.getBoundingClientRect();
                 var topCol = Math.round(boundingRectCol.top);
@@ -315,7 +318,7 @@ angular.module('src/templates/ui-shifter-calendar.tpl.html', []).run(['$template
                 newCoordinates = null;
             if (calculateMinuteDiff(timeFilterStart, event.from) < 0 &&
                 calculateMinuteDiff(timeFilterStart, event.to) > 0) {
-                newCoordinates = getColumnCoordinates(componentId, event.day, timeFilterStart);
+                newCoordinates = getColumnCoordinates(componentId, event.day, event.team, timeFilterStart);
                 recalculatedHeight = calculateHeight(
                     calculateMinuteDiff(timeFilterStart, event.to),
                     newCoordinates.height
@@ -328,6 +331,25 @@ angular.module('src/templates/ui-shifter-calendar.tpl.html', []).run(['$template
                 height: recalculatedHeight,
                 width: recalculatedWidth
             };
+        }
+
+        function getEventClass(type) {
+            var eventClass = '';
+            switch(type) {
+                case eventConst.OPEN_HOUR:
+                    eventClass = 'oh';
+                    break;
+                case eventConst.BOOKING:
+                    eventClass = 'booking';
+                    break;
+                case eventConst.SHIFT:
+                    eventClass = 'shift';
+                    break;
+                default:
+                    break;
+            }
+
+            return eventClass;
         }
 
         // public factory methods
@@ -344,7 +366,10 @@ angular.module('src/templates/ui-shifter-calendar.tpl.html', []).run(['$template
         .module('UI.Shifter.Calendar')
         .constant('$moment', moment)
         .constant('eventConst', {
-            BOOKING: 'booking'
+            EVENT_CLASS: 'event',
+            OPEN_HOUR: 'openHour',
+            BOOKING: 'booking',
+            SHIFT: 'shift'
         });
 })();
 (function() {
@@ -353,9 +378,10 @@ angular.module('src/templates/ui-shifter-calendar.tpl.html', []).run(['$template
     angular
         .module('UI.Shifter.Calendar')
         .controller('uiShifterCalendarCtrl', ['$scope', '$document', '$moment', 'eventConst', 'uiShifterEvent',
-            'uiShifterCalendarEvent', uiShifterCalendarCtrl]);
+            'uiShifterCalendarEvent', '$window', uiShifterCalendarCtrl]);
 
-    function uiShifterCalendarCtrl($scope, $document, $moment, eventConst, uiShifterEvent, uiShifterCalendarEvent) {
+    function uiShifterCalendarCtrl($scope, $document, $moment, eventConst, uiShifterEvent, uiShifterCalendarEvent,
+                                   $window) {
         var vm = this,
             events = [];
         vm.hours = [];
@@ -378,7 +404,7 @@ angular.module('src/templates/ui-shifter-calendar.tpl.html', []).run(['$template
         };
 
         var clearAllEvents = function () {
-            var shifts = $document[0].getElementsByClassName(eventConst.BOOKING);
+            var shifts = $document[0].getElementsByClassName(eventConst.EVENT_CLASS);
 
             while(shifts.length > 0){
                 shifts[0].parentNode.removeChild(shifts[0]);
@@ -387,28 +413,36 @@ angular.module('src/templates/ui-shifter-calendar.tpl.html', []).run(['$template
 
         $scope.$watch('vm.timeFilter', function (newValue, oldValue) {
             countRows(newValue.start, newValue.end);
-            angular.element($document[0]).ready(function () {
-                drawEvents();
-            });
+            redrawEvents();
         }, true);
 
         $scope.$watch('vm.dayFilter', function (newValue, oldValue) {
-            angular.element($document[0]).ready(function () {
-                drawEvents();
-            });
+            redrawEvents();
+        }, true);
+
+        $scope.$watch('vm.teams', function (newValue, oldValue) {
+            redrawEvents();
         }, true);
 
         $scope.$watch('vm.events', function (newValue, oldValue) {
-            events = uiShifterEvent.initEvents(vm.events);
+            events = uiShifterEvent.sortEvents(vm.events);
+            redrawEvents();
+        }, true);
+
+        // wait till table will be rendered and draw all events
+        var redrawEvents = function () {
             angular.element($document[0]).ready(function () {
                 drawEvents();
             });
-        }, true);
+        };
 
         /**
          * INIT
          */
-        angular.element($document[0]).ready(function () {
+        redrawEvents();
+
+        // handle resize event
+        angular.element($window).bind('resize', function () {
             drawEvents();
         });
 
@@ -424,10 +458,6 @@ angular.module('src/templates/ui-shifter-calendar.tpl.html', []).run(['$template
         .module('UI.Shifter.Calendar')
         .directive('uiShifterCalendar', uiShiftCalendarDirective);
 
-    function link ($scope) {
-
-    }
-
     function uiShiftCalendarDirective() {
         return {
             restrict: 'AE',
@@ -437,16 +467,17 @@ angular.module('src/templates/ui-shifter-calendar.tpl.html', []).run(['$template
             scope: {
                 id: '@',
                 events: '=',
+                teams: '=',
                 timeFilter: '=',
                 dayFilter: '=',
                 shadow: '='
             },
-            bindToController: true,
-            link: link
+            bindToController: true
         };
     }
 
 })();
+
 (function() {
     'use strict';
 
@@ -460,261 +491,24 @@ angular.module('src/templates/ui-shifter-calendar.tpl.html', []).run(['$template
 
         /**
          * Takes array as an argument and creates deep copy of it in order to sort events and preserve angular from
-         * triggering infinite watcher loop (if vm.events from scope is used). Compares only days (converted to
-         * numbers).
+         * triggering infinite watcher loop (if vm.events from scope is used).
          *
          * @param events
          * @returns {*}
          */
-        uiShifterEvent.initEvents = function (events) {
+        uiShifterEvent.sortEvents = function (events) {
             var eventsToSort = angular.copy(events);
 
-            // set unique id and default position for each event
-            eventsToSort.forEach(function (element) {
-                element.position = 0;
-                element.uuid = uuidv4();
-            });
-
-            // sort array
+            // sort array by events' types and days
             eventsToSort.sort(function (a, b) {
-                var aDay = convertDaysToNumbers(a.day),
-                    bDay = convertDaysToNumbers(b.day);
+                var dayDiff = compareHelperFn(convertDaysToNumbers(a.day), convertDaysToNumbers(b.day)),
+                    typeDiff = compareHelperFn(convertEventTypesToNumbers(a.type), convertEventTypesToNumbers(b.type));
 
-                return aDay - bDay;
+                return typeDiff == 0 ? dayDiff : typeDiff;
             });
-
-            // find best places for events
-            eventsToSort = resolveEventPositions(eventsToSort);
 
             return eventsToSort;
         };
-
-        /**
-         * Handle 'resolving logic': separate array by days, calculate events positions and merge results.
-         *
-         * @param events
-         * @returns {Array}
-         */
-        function resolveEventPositions(events) {
-            var dayEvents = splitArrayByDays(events),
-                eventsArr = null;
-
-            dayEvents.forEach(function (dayEventArr) {
-                eventsArr = new Array(24);
-                dayEventArr.forEach(function (element) {
-                    var event = {
-                        time: {
-                            from: {
-                                hour: parseInt(element.from.substring(0, 2)),
-                                minute: parseInt(element.from.substring(3, 5))
-                            },
-                            to: {
-                                hour: parseInt(element.to.substring(0, 2)),
-                                minute: parseInt(element.to.substring(3, 5))
-                            }
-                        },
-                        event: element,
-                        maxColumns: parseInt(element.fraction.substring(2, 3)),
-                        eventLength: parseInt(element.fraction.substring(0, 1))
-                    };
-
-                    var position = 0;
-                    while (isPositionOccupied(eventsArr, event.time, position, event.eventLength)) {
-                        position++;
-                    }
-
-                    putEventIntoArray(eventsArr, event, position);
-                });
-
-                debugPrintTab(eventsArr);
-                assignEventPositions(dayEventArr, eventsArr);
-            });
-
-            return mergeArraysOfDays(dayEvents);
-        }
-
-        /**
-         * Produces array of arrays' events.
-         *
-         * @param events
-         */
-        function splitArrayByDays(events) {
-            var dayEvents = [];
-
-            events.forEach(function (event) {
-                var dayNumber = convertDaysToNumbers(event.day);
-
-                if (!dayEvents[dayNumber]) {
-                    dayEvents[dayNumber] = [];
-                }
-
-                dayEvents[dayNumber].push(event);
-            });
-
-            return dayEvents;
-        }
-
-        /**
-         * Consolidate all events into one array.
-         *
-         * @param dayEvents
-         */
-        function mergeArraysOfDays(dayEvents) {
-            var allEvents = [];
-
-            dayEvents.forEach(function (dayEventArr) {
-                dayEventArr.forEach(function (event) {
-                    allEvents.push(event);
-                });
-            });
-
-            return allEvents;
-        }
-
-        /**
-         * Method takes four parameters - actual events array, time frame (from and to), position and length of event.
-         * Length of event is determined by fraction. For example we have event from 9:00 to 10:00, which has
-         * 1/4 fraction, and suitable row in array, so it will look like this:
-         *
-         * | - | - | - | - |, where
-         *
-         * '-' free space in array.
-         *
-         * In order to check if position is free, there is iteration through time frames, but we are checking row with
-         * full hours (10:00) only if there are some minutes past. If there is some event already on that position
-         * method returns true, else after iterating all cells method returns false (position is free like depicted
-         * above).
-         *
-         * @param eventsArr
-         * @param time
-         * @param position
-         * @param length
-         * @returns {boolean}
-         */
-        function isPositionOccupied(eventsArr, time, position, length) {
-            var occupied = false,
-                fromCounter = time.from.hour,
-                toCounter = time.to.hour;
-
-            if (time.to.minute === 0) {
-                toCounter--;
-            }
-
-            for (var i = fromCounter; i <= toCounter; i++) {
-                if (eventsArr[i]) {
-                    for(var j = position; j < position + length; j++) {
-                        if (eventsArr[i][j] && eventsArr[i][j].event) {
-                            occupied = true;
-                            break;
-                        }
-                    }
-                }
-
-                if (occupied) {
-                    break;
-                }
-            }
-
-            return occupied;
-        }
-
-        /**
-         * Method takes events array, event source and position. Before event will be bound to cells, there is
-         * important condition, which checks if events array has two-dimensional array value already assigned.
-         * If not - creates new array with fraction denominator value (max columns value). For example we have event
-         * from 9:00 to 10:00, which has 1/4 fraction and position 0 (and of course - suitable row in array). The final
-         * result will look like this:
-         *
-         * | X | - | - | - |, where
-         *
-         * 'X' - event,
-         * '-' free space in array.
-         *
-         *
-         * @param eventsArr
-         * @param event
-         * @param position
-         */
-        function putEventIntoArray(eventsArr, event, position) {
-            for (var i = event.time.from.hour; i <= event.time.to.hour; i++) {
-                for (var j = position; j < position + event.eventLength; j++) {
-                    if (i === event.time.to.hour && event.time.to.minute > 0) {
-                        if (!eventsArr[i]) {
-                            eventsArr[i] = new Array(event.maxColumns);
-                        }
-                        eventsArr[i][j] = event;
-                    } else if (i < event.time.to.hour) {
-                        if (!eventsArr[i]) {
-                            eventsArr[i] = new Array(event.maxColumns);
-                        }
-                        eventsArr[i][j] = event;
-                    }
-                }
-            }
-        }
-
-        /**
-         * This method determines what is actual position of event. First occurence of UUID is considered as basic
-         * event position. Returns array of (uuid: position) pairs.
-         *
-         * @param eventsArr
-         * @returns {Array}
-         */
-        function createEventPositionsArray(eventsArr) {
-            var uuidArray = [];
-
-            for (var i = 0; i < eventsArr.length; i++) {
-                if (eventsArr[i]) {
-                    for (var j = 0; j < eventsArr[i].length; j++) {
-                        if (eventsArr[i][j]) {
-                            if (uuidArray[eventsArr[i][j].event.uuid] === undefined) {
-                                uuidArray[eventsArr[i][j].event.uuid] = j;
-                            }
-                        }
-                    }
-                }
-            }
-
-            return uuidArray;
-        }
-
-        /**
-         * This method rewrites calculated positions of events.
-         *
-         * @param events
-         * @param eventsArr
-         */
-        function assignEventPositions(events, eventsArr) {
-            var uuidArray = createEventPositionsArray(eventsArr);
-
-            events.forEach(function (element) {
-                element.position = uuidArray[element.uuid];
-            });
-        }
-
-        /**
-         * Debug method, draw simple event table. Delete after final algorithm implementation.
-         * @param eventsArr
-         */
-        function debugPrintTab(eventsArr) {
-            var print = '';
-
-            for (var i = 0; i < eventsArr.length; i++) {
-                if (eventsArr[i]) {
-                    var printLine = '';
-                    for (var j = 0; j < eventsArr[i].length; j++) {
-                        if (eventsArr[i][j]) {
-                            printLine += '| X ';
-                        } else {
-                            printLine += '| - ';
-                        }
-                    }
-                    print += printLine + '|\n';
-                }
-            }
-
-            console.log(print);
-        }
 
         /**
          * Helper method in order to optimise sort functionality. Takes string (day) as a parameter and converts it
@@ -753,15 +547,40 @@ angular.module('src/templates/ui-shifter-calendar.tpl.html', []).run(['$template
         }
 
         /**
-         * Helper method which returns universally unique identifier.
+         * Helper method for sort functionality. Takes string (eventType) as a parameter and converts it to number as
+         * follows: 0-openHour, 1-booking, 2-shift.
          *
-         * @returns {string}
+         * @param eventType
+         * @returns {number}
          */
-        function uuidv4() {
-            return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-                var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
-                return v.toString(16);
-            });
+        function convertEventTypesToNumbers(eventType) {
+            var convertedEventType = -1;
+            switch(eventType) {
+                case 'openHour':
+                    convertedEventType = 0;
+                    break;
+                case 'booking':
+                    convertedEventType = 1;
+                    break;
+                case 'shift':
+                    convertedEventType = 2;
+                    break;
+                default:
+                    break;
+            }
+
+            return convertedEventType;
+        }
+
+        /**
+         * Helper function in order to check position of event.
+         *
+         * @param left
+         * @param right
+         * @returns {number}
+         */
+        function compareHelperFn(left, right) {
+            return left - right;
         }
 
         // public factory methods

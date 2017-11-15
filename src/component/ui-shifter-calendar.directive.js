@@ -5,10 +5,6 @@
         .module('UI.Shifter.Calendar')
         .directive('uiShifterCalendar', uiShiftCalendarDirective);
 
-    function link ($scope) {
-
-    }
-
     function uiShiftCalendarDirective() {
         return {
             restrict: 'AE',
@@ -18,12 +14,12 @@
             scope: {
                 id: '@',
                 events: '=',
+                teams: '=',
                 timeFilter: '=',
                 dayFilter: '=',
                 shadow: '='
             },
-            bindToController: true,
-            link: link
+            bindToController: true
         };
     }
 

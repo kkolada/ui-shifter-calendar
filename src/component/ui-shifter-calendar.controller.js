@@ -4,9 +4,10 @@
     angular
         .module('UI.Shifter.Calendar')
         .controller('uiShifterCalendarCtrl', ['$scope', '$document', '$moment', 'eventConst', 'uiShifterEvent',
-            'uiShifterCalendarEvent', uiShifterCalendarCtrl]);
+            'uiShifterCalendarEvent', '$window', uiShifterCalendarCtrl]);
 
-    function uiShifterCalendarCtrl($scope, $document, $moment, eventConst, uiShifterEvent, uiShifterCalendarEvent) {
+    function uiShifterCalendarCtrl($scope, $document, $moment, eventConst, uiShifterEvent, uiShifterCalendarEvent,
+                                   $window) {
         var vm = this,
             events = [];
         vm.hours = [];
@@ -29,7 +30,7 @@
         };
 
         var clearAllEvents = function () {
-            var shifts = $document[0].getElementsByClassName(eventConst.BOOKING);
+            var shifts = $document[0].getElementsByClassName(eventConst.EVENT_CLASS);
 
             while(shifts.length > 0){
                 shifts[0].parentNode.removeChild(shifts[0]);
@@ -38,28 +39,36 @@
 
         $scope.$watch('vm.timeFilter', function (newValue, oldValue) {
             countRows(newValue.start, newValue.end);
-            angular.element($document[0]).ready(function () {
-                drawEvents();
-            });
+            redrawEvents();
         }, true);
 
         $scope.$watch('vm.dayFilter', function (newValue, oldValue) {
-            angular.element($document[0]).ready(function () {
-                drawEvents();
-            });
+            redrawEvents();
+        }, true);
+
+        $scope.$watch('vm.teams', function (newValue, oldValue) {
+            redrawEvents();
         }, true);
 
         $scope.$watch('vm.events', function (newValue, oldValue) {
-            events = uiShifterEvent.initEvents(vm.events);
+            events = uiShifterEvent.sortEvents(vm.events);
+            redrawEvents();
+        }, true);
+
+        // wait till table will be rendered and draw all events
+        var redrawEvents = function () {
             angular.element($document[0]).ready(function () {
                 drawEvents();
             });
-        }, true);
+        };
 
         /**
          * INIT
          */
-        angular.element($document[0]).ready(function () {
+        redrawEvents();
+
+        // handle resize event
+        angular.element($window).bind('resize', function () {
             drawEvents();
         });
 

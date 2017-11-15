@@ -26,6 +26,16 @@
             margin-top: 0.1em;
             margin-bottom: 3em;
         }
+        span {
+            background: #ddd;
+            border-radius: 3px;
+            margin: auto 5px;
+            padding: 0 3px;
+            cursor: pointer;
+        }
+        span:hover {
+            background: #bcbcbc;
+        }
     </style>
 </head>
 <body>
@@ -70,9 +80,16 @@
         </label>
         <button ng-click="activateWorkingDays()">Working days</button>
         <button ng-click="activateWeekend()">Weekend</button><br/>
+        <br/>
+        <label>Teams:</label>
+        <span ng-repeat="team in teams" ng-click="deleteTeam(team)">{{team}} (x)</span>
+        <br/><br/>
+        <label for="newTeam">New team name:</label>
+        <input type="text" id="newTeam" ng-model="newTeamName" placeholder="TeamName" />
+        <button ng-click="addNewTeam()">Add team</button>
         <hr style="margin: 20px 0 15px 0;">
         <label for="eventDay">Event day:</label>
-        <select name="mySelect" id="eventDay" ng-options="option.d for option in data.availableDays track by option.d"
+        <select name="daySelect" id="eventDay" ng-options="option.d for option in data.availableDays track by option.d"
                 ng-model="data.daySelected"></select>
         <label for="eventStartTime">Event start time:</label>
         <input type="text" id="eventStartTime" ng-model="eventStartTime" placeholder="00:00" />
@@ -80,12 +97,19 @@
         <input type="text" id="eventEndTime" ng-model="eventEndTime" placeholder="00:00" />
         <label for="eventFraction">Event fraction:</label>
         <input type="text" id="eventFraction" ng-model="eventFraction" placeholder="1/1" />
+        <label for="eventPosition">Event position:</label>
+        <input type="text" id="eventPosition" ng-model="position" placeholder="[0, 1, 2, 3, ...]" />
+        <label for="eventType">Event type:</label>
+        <select name="eventTypeSelect" id="eventType" ng-options="option.t for option in data.availableTypes track by option.t"
+                ng-model="data.typeSelected"></select>
+        <label for="eventTeam">Field:</label>
+        <input type="text" id="eventTeam" ng-model="teamName" placeholder="TeamName" />
         <button ng-click="addNewEvent()">Add event</button>
-        <hr style="border: none; margin-bottom: 30px;">
+        <br/><hr style="margin: 18px 0 45px 0;">
         <div style="width: 90%; margin: auto;">
-            <ui-shifter-calendar id="randomUUID" shadow="true"
+            <ui-shifter-calendar id="testUUID" shadow="true"
                                  time-filter="{start: data.startTime.t, end: data.endTime.t}"
-                                 day-filter="checkboxModel" events="events"></ui-shifter-calendar>
+                                 day-filter="checkboxModel" events="events" teams="teams"></ui-shifter-calendar>
         </div>
         <!-- also possible to use as attribute <div ui-shifter-calendar ... ></div>-->
     </div>

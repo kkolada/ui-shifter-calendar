@@ -11,8 +11,7 @@
   .ui-shifter-calendar table.ui-shifter-calendar-week-wrapper thead > tr > th {
     padding: 4px 30px;
     border: 1px solid #cfcfcf;
-    font-weight: normal;
-    min-width: 80px; }
+    font-weight: normal; }
     .ui-shifter-calendar table.ui-shifter-calendar-week-wrapper thead > tr > th:first-child {
       padding: 4px 0;
       border-top: none;
@@ -23,38 +22,53 @@
     font-size: 0.8em;
     border-top: none;
     border-left: none; }
-  .ui-shifter-calendar table.ui-shifter-calendar-week-wrapper tbody > tr .booking {
+  .ui-shifter-calendar table.ui-shifter-calendar-week-wrapper tbody > tr .event {
     cursor: pointer;
     position: absolute;
     width: 70px;
     height: 60px;
     display: block;
-    background: #ff0000;
     border-radius: 4px;
-    border: 1px solid #c80000;
-    opacity: .8;
-    transition: background .3s ease .0s; }
-    .ui-shifter-calendar table.ui-shifter-calendar-week-wrapper tbody > tr .booking:hover {
-      background: #c80000; }
-    .ui-shifter-calendar table.ui-shifter-calendar-week-wrapper tbody > tr .booking span {
+    opacity: .9;
+    transition: background .3s ease .0s;
+    overflow: hidden; }
+    .ui-shifter-calendar table.ui-shifter-calendar-week-wrapper tbody > tr .event div {
       font-size: x-small;
-      padding-left: 5px;
-      color: #fff; }
-    .ui-shifter-calendar table.ui-shifter-calendar-week-wrapper tbody > tr .booking.cutTop {
+      color: #000; }
+    .ui-shifter-calendar table.ui-shifter-calendar-week-wrapper tbody > tr .event.cutTop {
       border-radius: 0 0 4px 4px;
       border-top: none; }
-    .ui-shifter-calendar table.ui-shifter-calendar-week-wrapper tbody > tr .booking.cutBottom {
+    .ui-shifter-calendar table.ui-shifter-calendar-week-wrapper tbody > tr .event.cutBottom {
       border-radius: 4px 4px 0 0;
       border-bottom: none; }
-    .ui-shifter-calendar table.ui-shifter-calendar-week-wrapper tbody > tr .booking.cutTopAndBottom {
+    .ui-shifter-calendar table.ui-shifter-calendar-week-wrapper tbody > tr .event.cutTopAndBottom {
       border-radius: 0 0 0 0;
       border-top: none;
       border-bottom: none; }
+    .ui-shifter-calendar table.ui-shifter-calendar-week-wrapper tbody > tr .event.oh {
+      background: #eeeeee;
+      border: 1px solid #cbcbcb; }
+      .ui-shifter-calendar table.ui-shifter-calendar-week-wrapper tbody > tr .event.oh:hover {
+        background: #cbcbcb;
+        border: 1px solid #a8a8a8; }
+    .ui-shifter-calendar table.ui-shifter-calendar-week-wrapper tbody > tr .event.booking {
+      background: #63e468;
+      border: 1px solid #5cc161; }
+      .ui-shifter-calendar table.ui-shifter-calendar-week-wrapper tbody > tr .event.booking:hover {
+        background: #5cc161;
+        border: 1px solid #4f9e4f; }
+    .ui-shifter-calendar table.ui-shifter-calendar-week-wrapper tbody > tr .event.shift {
+      background: #3d8c40;
+      border: 1px solid #326934; }
+      .ui-shifter-calendar table.ui-shifter-calendar-week-wrapper tbody > tr .event.shift:hover {
+        background: #326934;
+        border: 1px solid #214621; }
+      .ui-shifter-calendar table.ui-shifter-calendar-week-wrapper tbody > tr .event.shift div {
+        color: #fff; }
   .ui-shifter-calendar table.ui-shifter-calendar-week-wrapper tbody > tr > td {
     border: 1px solid #cfcfcf;
     font-weight: normal;
     font-size: small;
-    min-width: 80px;
     vertical-align: top;
     height: 15px; }
     .ui-shifter-calendar table.ui-shifter-calendar-week-wrapper tbody > tr > td:first-child {

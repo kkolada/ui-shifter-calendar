@@ -200,7 +200,7 @@ shifterCalendarShowcaseApp.controller('ShowcaseCtrl', function($scope) {
         {
             day: 'Monday',
             from: '03:15',
-            to: '7:00',
+            to: '07:00',
             fraction: '1/4',
             position: 2,
             type: 'booking',
@@ -327,7 +327,14 @@ shifterCalendarShowcaseApp.controller('ShowcaseCtrl', function($scope) {
         if (index > -1) {
             $scope.teams.splice(index, 1);
         }
-    }
+    };
+
+    /**
+     * INIT
+     */
+    setTimeout(function() {
+        $scope.$broadcast('UI.Shifter.Calendar:repaint');
+    }, 2000);
 
 });
 /* EOF */

@@ -1,5 +1,6 @@
 $border-color-grey: #cfcfcf;
-$first-column-min-width: 30px;
+$outer-table-border-color: #9e9c9c;
+$first-column-fixed-width: 43px;
 $event-border-radius: 4px;
 
 .ui-shifter-calendar {
@@ -9,26 +10,28 @@ $event-border-radius: 4px;
     width: 100%;
     border-spacing: 0px;
     border-collapse: collapse;
-    table-layout: auto;
+    table-layout: fixed;
+    border: 3px solid $outer-table-border-color;
     &.shadow {
       -webkit-box-shadow: 4px 4px 12px -4px $border-color-grey;
       box-shadow: 4px 4px 12px -4px $border-color-grey;
+      border: none;
     }
   }
 
   & table.ui-shifter-calendar-week-wrapper {
     & thead > tr {
       & > th {
-        padding: 4px 30px;
         border: 1px solid $border-color-grey;
-        font-weight: normal;
+        font-weight: bold;
+        text-align: center;
 
         &:first-child {
           padding: 4px 0;
           border-top: none;
           border-left: none;
           border-bottom: none;
-          min-width: $first-column-min-width;
+          width: $first-column-fixed-width;
         }
       }
 
@@ -109,7 +112,7 @@ $event-border-radius: 4px;
           padding: 4px 6px;
           font-weight: lighter;
           text-align: right;
-          min-width: $first-column-min-width;
+          width: $first-column-fixed-width;
         }
       }
 

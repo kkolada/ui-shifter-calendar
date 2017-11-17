@@ -9,6 +9,7 @@
             EVENT_CLASS: 'event',
             OPEN_HOUR: 'openHour',
             BOOKING: 'booking',
-            SHIFT: 'shift'
+            SHIFT: 'shift',
+            REPAINT_EVENTS: 'UI.Shifter.Calendar:repaint'
         });
 })();

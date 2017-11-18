@@ -1,7 +1,24 @@
+// variables
 $border-color-grey: #cfcfcf;
-$first-column-min-width: 30px;
+$outer-table-border-color: #9e9c9c;
+$first-column-fixed-width: 43px;
 $event-border-radius: 4px;
 
+
+// helpers
+@mixin booking-transferred-pseudo-el {
+  content: '';
+  position: absolute;
+  display: block;
+}
+
+@mixin transformRotateCustomDegree($rad) {
+  -webkit-transform: rotate($rad);
+  -moz-transform: rotate($rad);
+  transform: rotate($rad);
+}
+
+// main styles
 .ui-shifter-calendar {
   display: block;
 
@@ -9,26 +26,28 @@ $event-border-radius: 4px;
     width: 100%;
     border-spacing: 0px;
     border-collapse: collapse;
-    table-layout: auto;
+    table-layout: fixed;
+    border: 3px solid $outer-table-border-color;
     &.shadow {
       -webkit-box-shadow: 4px 4px 12px -4px $border-color-grey;
       box-shadow: 4px 4px 12px -4px $border-color-grey;
+      border: none;
     }
   }
 
   & table.ui-shifter-calendar-week-wrapper {
     & thead > tr {
       & > th {
-        padding: 4px 30px;
         border: 1px solid $border-color-grey;
-        font-weight: normal;
+        font-weight: bold;
+        text-align: center;
 
         &:first-child {
           padding: 4px 0;
           border-top: none;
           border-left: none;
           border-bottom: none;
-          min-width: $first-column-min-width;
+          width: $first-column-fixed-width;
         }
       }
 
@@ -96,6 +115,29 @@ $event-border-radius: 4px;
             color: #fff;
           }
         }
+        &.booking-transferred {
+          &:hover {
+            background: #76dc7e;
+            border: 1px solid #5db95d;
+            &::before {
+              opacity: 1;
+            }
+          }
+          background: #98ffa0;
+          border: 1px solid #76dc7e;
+          &::before {
+            @include booking-transferred-pseudo-el;
+            top: -20px;
+            right: -20px;
+            width: 40px;
+            height: 30px;
+            background: #ffffff;
+            border-bottom: 1px solid #0e0e0e;
+            @include transformRotateCustomDegree(45deg);
+            opacity: 0.8;
+            transition: opacity .3s ease .0s;
+          }
+        }
       }
 
       & > td {
@@ -109,7 +151,7 @@ $event-border-radius: 4px;
           padding: 4px 6px;
           font-weight: lighter;
           text-align: right;
-          min-width: $first-column-min-width;
+          width: $first-column-fixed-width;
         }
       }
 

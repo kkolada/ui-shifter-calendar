@@ -345,6 +345,9 @@ angular.module('src/templates/ui-shifter-calendar.tpl.html', []).run(['$template
                 case eventConst.SHIFT:
                     eventClass = 'shift';
                     break;
+                case eventConst.BOOKING_TRANSFERRED:
+                    eventClass = 'booking-transferred';
+                    break;
                 default:
                     break;
             }
@@ -369,7 +372,9 @@ angular.module('src/templates/ui-shifter-calendar.tpl.html', []).run(['$template
             EVENT_CLASS: 'event',
             OPEN_HOUR: 'openHour',
             BOOKING: 'booking',
-            SHIFT: 'shift'
+            SHIFT: 'shift',
+            BOOKING_TRANSFERRED: 'booking-transferred',
+            REPAINT_EVENTS: 'UI.Shifter.Calendar:repaint'
         });
 })();
 (function() {
@@ -436,14 +441,13 @@ angular.module('src/templates/ui-shifter-calendar.tpl.html', []).run(['$template
             });
         };
 
-        /**
-         * INIT
-         */
-        redrawEvents();
-
         // handle resize event
         angular.element($window).bind('resize', function () {
             drawEvents();
+        });
+
+        $scope.$on(eventConst.REPAINT_EVENTS, function() {
+            redrawEvents();
         });
 
     }

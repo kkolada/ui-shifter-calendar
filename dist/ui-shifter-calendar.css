@@ -4,20 +4,22 @@
     width: 100%;
     border-spacing: 0px;
     border-collapse: collapse;
-    table-layout: auto; }
+    table-layout: fixed;
+    border: 3px solid #9e9c9c; }
     .ui-shifter-calendar table.shadow {
       -webkit-box-shadow: 4px 4px 12px -4px #cfcfcf;
-      box-shadow: 4px 4px 12px -4px #cfcfcf; }
+      box-shadow: 4px 4px 12px -4px #cfcfcf;
+      border: none; }
   .ui-shifter-calendar table.ui-shifter-calendar-week-wrapper thead > tr > th {
-    padding: 4px 30px;
     border: 1px solid #cfcfcf;
-    font-weight: normal; }
+    font-weight: bold;
+    text-align: center; }
     .ui-shifter-calendar table.ui-shifter-calendar-week-wrapper thead > tr > th:first-child {
       padding: 4px 0;
       border-top: none;
       border-left: none;
       border-bottom: none;
-      min-width: 30px; }
+      width: 43px; }
   .ui-shifter-calendar table.ui-shifter-calendar-week-wrapper thead > tr.subhead > th {
     font-size: 0.8em;
     border-top: none;
@@ -65,6 +67,29 @@
         border: 1px solid #214621; }
       .ui-shifter-calendar table.ui-shifter-calendar-week-wrapper tbody > tr .event.shift div {
         color: #fff; }
+    .ui-shifter-calendar table.ui-shifter-calendar-week-wrapper tbody > tr .event.booking-transferred {
+      background: #98ffa0;
+      border: 1px solid #76dc7e; }
+      .ui-shifter-calendar table.ui-shifter-calendar-week-wrapper tbody > tr .event.booking-transferred:hover {
+        background: #76dc7e;
+        border: 1px solid #5db95d; }
+        .ui-shifter-calendar table.ui-shifter-calendar-week-wrapper tbody > tr .event.booking-transferred:hover::before {
+          opacity: 1; }
+      .ui-shifter-calendar table.ui-shifter-calendar-week-wrapper tbody > tr .event.booking-transferred::before {
+        content: '';
+        position: absolute;
+        display: block;
+        top: -20px;
+        right: -20px;
+        width: 40px;
+        height: 30px;
+        background: #ffffff;
+        border-bottom: 1px solid #0e0e0e;
+        -webkit-transform: rotate(45deg);
+        -moz-transform: rotate(45deg);
+        transform: rotate(45deg);
+        opacity: 0.8;
+        transition: opacity .3s ease .0s; }
   .ui-shifter-calendar table.ui-shifter-calendar-week-wrapper tbody > tr > td {
     border: 1px solid #cfcfcf;
     font-weight: normal;
@@ -75,7 +100,7 @@
       padding: 4px 6px;
       font-weight: lighter;
       text-align: right;
-      min-width: 30px; }
+      width: 43px; }
   .ui-shifter-calendar table.ui-shifter-calendar-week-wrapper tbody > tr.first-half-hour > td {
     border-bottom-style: dotted; }
   .ui-shifter-calendar table.ui-shifter-calendar-week-wrapper tbody > tr.second-half-hour > td {

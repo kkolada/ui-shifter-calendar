@@ -62,14 +62,13 @@
             });
         };
 
-        /**
-         * INIT
-         */
-        redrawEvents();
-
         // handle resize event
         angular.element($window).bind('resize', function () {
             drawEvents();
+        });
+
+        $scope.$on(eventConst.REPAINT_EVENTS, function() {
+            redrawEvents();
         });
 
     }

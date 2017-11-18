@@ -1,8 +1,24 @@
+// variables
 $border-color-grey: #cfcfcf;
 $outer-table-border-color: #9e9c9c;
 $first-column-fixed-width: 43px;
 $event-border-radius: 4px;
 
+
+// helpers
+@mixin booking-transferred-pseudo-el {
+  content: '';
+  position: absolute;
+  display: block;
+}
+
+@mixin transformRotateCustomDegree($rad) {
+  -webkit-transform: rotate($rad);
+  -moz-transform: rotate($rad);
+  transform: rotate($rad);
+}
+
+// main styles
 .ui-shifter-calendar {
   display: block;
 
@@ -97,6 +113,29 @@ $event-border-radius: 4px;
           border: 1px solid #326934;
           & div {
             color: #fff;
+          }
+        }
+        &.booking-transferred {
+          &:hover {
+            background: #76dc7e;
+            border: 1px solid #5db95d;
+            &::before {
+              opacity: 1;
+            }
+          }
+          background: #98ffa0;
+          border: 1px solid #76dc7e;
+          &::before {
+            @include booking-transferred-pseudo-el;
+            top: -20px;
+            right: -20px;
+            width: 40px;
+            height: 30px;
+            background: #ffffff;
+            border-bottom: 1px solid #0e0e0e;
+            @include transformRotateCustomDegree(45deg);
+            opacity: 0.8;
+            transition: opacity .3s ease .0s;
           }
         }
       }

@@ -122,7 +122,7 @@ shifterCalendarShowcaseApp.controller('ShowcaseCtrl', function($scope) {
             to: '05:00',
             fraction: '2/4',
             position: 0,
-            type: 'shift',
+            type: 'booking-transferred',
             team: 'TeamB'
         },
         {

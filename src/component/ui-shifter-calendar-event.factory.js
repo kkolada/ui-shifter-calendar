@@ -327,6 +327,9 @@
                 case eventConst.SHIFT:
                     eventClass = 'shift';
                     break;
+                case eventConst.BOOKING_TRANSFERRED:
+                    eventClass = 'booking-transferred';
+                    break;
                 default:
                     break;
             }

@@ -67,6 +67,29 @@
         border: 1px solid #214621; }
       .ui-shifter-calendar table.ui-shifter-calendar-week-wrapper tbody > tr .event.shift div {
         color: #fff; }
+    .ui-shifter-calendar table.ui-shifter-calendar-week-wrapper tbody > tr .event.booking-transferred {
+      background: #98ffa0;
+      border: 1px solid #76dc7e; }
+      .ui-shifter-calendar table.ui-shifter-calendar-week-wrapper tbody > tr .event.booking-transferred:hover {
+        background: #76dc7e;
+        border: 1px solid #5db95d; }
+        .ui-shifter-calendar table.ui-shifter-calendar-week-wrapper tbody > tr .event.booking-transferred:hover::before {
+          opacity: 1; }
+      .ui-shifter-calendar table.ui-shifter-calendar-week-wrapper tbody > tr .event.booking-transferred::before {
+        content: '';
+        position: absolute;
+        display: block;
+        top: -20px;
+        right: -20px;
+        width: 40px;
+        height: 30px;
+        background: #ffffff;
+        border-bottom: 1px solid #0e0e0e;
+        -webkit-transform: rotate(45deg);
+        -moz-transform: rotate(45deg);
+        transform: rotate(45deg);
+        opacity: 0.8;
+        transition: opacity .3s ease .0s; }
   .ui-shifter-calendar table.ui-shifter-calendar-week-wrapper tbody > tr > td {
     border: 1px solid #cfcfcf;
     font-weight: normal;
